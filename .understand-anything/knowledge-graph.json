@@ -1,0 +1,1008 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "practice",
+    "languages": [
+      "TypeScript",
+      "TSX",
+      "CSS",
+      "HTML",
+      "JSON",
+      "JavaScript",
+      "Markdown"
+    ],
+    "frameworks": [
+      "React",
+      "Vite",
+      "Redux Toolkit",
+      "React Redux",
+      "Tailwind CSS"
+    ],
+    "description": "A React, TypeScript, Vite, Tailwind CSS, and Redux Toolkit todo application.",
+    "analyzedAt": "2026-05-20T09:38:31.638Z",
+    "gitCommitHash": "no-head-uncommitted-worktree"
+  },
+  "nodes": [
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "name": "README",
+      "filePath": "README.md",
+      "summary": "Documents the Vite React template baseline and linting guidance for the project.",
+      "tags": [
+        "documentation",
+        "vite",
+        "react"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:package.json",
+      "type": "config",
+      "name": "package manifest",
+      "filePath": "package.json",
+      "summary": "Defines npm scripts and dependencies for React, Vite, Redux Toolkit, Tailwind CSS, TypeScript, and ESLint.",
+      "tags": [
+        "npm",
+        "dependencies",
+        "scripts"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:eslint.config.js",
+      "type": "config",
+      "name": "ESLint configuration",
+      "filePath": "eslint.config.js",
+      "summary": "Configures JavaScript, TypeScript, React Hooks, and React Refresh lint rules.",
+      "tags": [
+        "eslint",
+        "quality",
+        "react"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:index.html",
+      "type": "file",
+      "name": "HTML entry shell",
+      "filePath": "index.html",
+      "summary": "Provides the root DOM element and loads the Vite module entry at src/main.tsx.",
+      "tags": [
+        "html",
+        "entry",
+        "vite"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:tsconfig.json",
+      "type": "config",
+      "name": "TypeScript solution config",
+      "filePath": "tsconfig.json",
+      "summary": "References app and node TypeScript project configurations.",
+      "tags": [
+        "typescript",
+        "config"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:tsconfig.app.json",
+      "type": "config",
+      "name": "TypeScript app config",
+      "filePath": "tsconfig.app.json",
+      "summary": "Configures browser TSX compilation for files under src with strict lint-style compiler checks.",
+      "tags": [
+        "typescript",
+        "app",
+        "config"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:tsconfig.node.json",
+      "type": "config",
+      "name": "TypeScript node config",
+      "filePath": "tsconfig.node.json",
+      "summary": "Configures TypeScript settings for the Vite configuration file.",
+      "tags": [
+        "typescript",
+        "node",
+        "config"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:vite.config.ts",
+      "type": "config",
+      "name": "Vite configuration",
+      "filePath": "vite.config.ts",
+      "summary": "Enables React and Tailwind CSS plugins for the Vite build pipeline.",
+      "tags": [
+        "vite",
+        "react",
+        "tailwind"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/main.tsx",
+      "type": "file",
+      "name": "React bootstrap",
+      "filePath": "src/main.tsx",
+      "summary": "Creates the React root, installs the Redux Provider, and renders App inside StrictMode.",
+      "tags": [
+        "entry",
+        "react",
+        "redux"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/App.tsx",
+      "type": "file",
+      "name": "App component",
+      "filePath": "src/App.tsx",
+      "summary": "Top-level application component that renders the todo list feature.",
+      "tags": [
+        "react",
+        "component"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/TODO/TodoList.tsx",
+      "type": "file",
+      "name": "TodoList component",
+      "filePath": "src/components/TODO/TodoList.tsx",
+      "summary": "Manages todo input and filter UI, selects todo state, dispatches add/filter actions, and renders todo items.",
+      "tags": [
+        "react",
+        "component",
+        "todo",
+        "redux"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/TODO/TodoListItem.tsx",
+      "type": "file",
+      "name": "TodoListItem component",
+      "filePath": "src/components/TODO/TodoListItem.tsx",
+      "summary": "Renders one todo item with completion toggle and delete controls wired to Redux actions.",
+      "tags": [
+        "react",
+        "component",
+        "todo",
+        "redux"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/features/todos/todoSlice.ts",
+      "type": "file",
+      "name": "Todo Redux slice",
+      "filePath": "src/features/todos/todoSlice.ts",
+      "summary": "Defines todo state, filter state, and add/delete/toggle/filter reducers using Redux Toolkit createSlice.",
+      "tags": [
+        "redux",
+        "state",
+        "todo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/store/store.ts",
+      "type": "file",
+      "name": "Redux store",
+      "filePath": "src/store/store.ts",
+      "summary": "Configures the Redux store with the todos reducer and exports typed RootState and AppDispatch aliases.",
+      "tags": [
+        "redux",
+        "store",
+        "state"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/store/hooks.ts",
+      "type": "file",
+      "name": "Typed Redux hooks",
+      "filePath": "src/store/hooks.ts",
+      "summary": "Exports typed useDispatch and useSelector hooks for application components.",
+      "tags": [
+        "redux",
+        "hooks",
+        "typescript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/interfaces/todo.interface.ts",
+      "type": "file",
+      "name": "TODO interface",
+      "filePath": "src/interfaces/todo.interface.ts",
+      "summary": "Defines the shape of todo items with id, text, and completed fields.",
+      "tags": [
+        "typescript",
+        "types",
+        "todo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/types/TODO.type.ts",
+      "type": "file",
+      "name": "TodoFilter type",
+      "filePath": "src/types/TODO.type.ts",
+      "summary": "Defines allowed filter values: all, active, and completed.",
+      "tags": [
+        "typescript",
+        "types",
+        "todo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/index.ts",
+      "type": "file",
+      "name": "Standalone index script",
+      "filePath": "src/index.ts",
+      "summary": "Contains a simple development console log and is separate from the Vite app entry.",
+      "tags": [
+        "typescript",
+        "script"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/index.css",
+      "type": "file",
+      "name": "Global styles",
+      "filePath": "src/index.css",
+      "summary": "Imports Tailwind CSS and defines global theme variables, root layout, typography, and responsive rules.",
+      "tags": [
+        "css",
+        "tailwind",
+        "theme"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/App.css",
+      "type": "file",
+      "name": "App styles",
+      "filePath": "src/App.css",
+      "summary": "Contains template component styles and layout helpers referenced by App.css import.",
+      "tags": [
+        "css",
+        "styles"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/App.tsx:App",
+      "type": "function",
+      "name": "App",
+      "filePath": "src/App.tsx",
+      "summary": "React component that renders the TodoList feature.",
+      "tags": [
+        "react",
+        "component"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/TODO/TodoList.tsx:TodoList",
+      "type": "function",
+      "name": "TodoList",
+      "filePath": "src/components/TODO/TodoList.tsx",
+      "summary": "React component for adding, filtering, and rendering todo items.",
+      "tags": [
+        "react",
+        "todo",
+        "redux"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/components/TODO/TodoList.tsx:plusClickHandler",
+      "type": "function",
+      "name": "plusClickHandler",
+      "filePath": "src/components/TODO/TodoList.tsx",
+      "summary": "Dispatches addTodo with the current input text and clears the input.",
+      "tags": [
+        "event-handler",
+        "redux",
+        "todo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/components/TODO/TodoListItem.tsx:TodoListItem",
+      "type": "function",
+      "name": "TodoListItem",
+      "filePath": "src/components/TODO/TodoListItem.tsx",
+      "summary": "React component for a single todo row with toggle and delete interactions.",
+      "tags": [
+        "react",
+        "todo",
+        "redux"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/features/todos/todoSlice.ts:addTodo",
+      "type": "function",
+      "name": "addTodo reducer",
+      "filePath": "src/features/todos/todoSlice.ts",
+      "summary": "Adds a new todo with generated id, trimmed text, and incomplete status.",
+      "tags": [
+        "redux",
+        "reducer",
+        "todo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/features/todos/todoSlice.ts:deleteTodo",
+      "type": "function",
+      "name": "deleteTodo reducer",
+      "filePath": "src/features/todos/todoSlice.ts",
+      "summary": "Removes a todo by id from the todos array.",
+      "tags": [
+        "redux",
+        "reducer",
+        "todo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/features/todos/todoSlice.ts:toggleTodo",
+      "type": "function",
+      "name": "toggleTodo reducer",
+      "filePath": "src/features/todos/todoSlice.ts",
+      "summary": "Toggles the completed flag for the todo matching the dispatched id.",
+      "tags": [
+        "redux",
+        "reducer",
+        "todo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/features/todos/todoSlice.ts:setFilter",
+      "type": "function",
+      "name": "setFilter reducer",
+      "filePath": "src/features/todos/todoSlice.ts",
+      "summary": "Updates the active todo filter in Redux state.",
+      "tags": [
+        "redux",
+        "reducer",
+        "filter"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/interfaces/todo.interface.ts:TODO",
+      "type": "class",
+      "name": "TODO interface",
+      "filePath": "src/interfaces/todo.interface.ts",
+      "summary": "TypeScript interface representing todo item data.",
+      "tags": [
+        "typescript",
+        "interface",
+        "todo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/types/TODO.type.ts:TodoFilter",
+      "type": "class",
+      "name": "TodoFilter type",
+      "filePath": "src/types/TODO.type.ts",
+      "summary": "Union type representing the todo filter choices used by UI and state.",
+      "tags": [
+        "typescript",
+        "type",
+        "filter"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "concept:todo-state-flow",
+      "type": "concept",
+      "name": "Todo state flow",
+      "summary": "User input in React components dispatches Redux actions, reducers update todo state, and typed selectors feed filtered UI rendering.",
+      "tags": [
+        "architecture",
+        "redux",
+        "todo"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:index.html",
+      "target": "file:src/main.tsx",
+      "type": "imports",
+      "weight": 0.7,
+      "description": "index.html references src/main.tsx"
+    },
+    {
+      "source": "config:tsconfig.json",
+      "target": "config:tsconfig.app.json",
+      "type": "configures",
+      "weight": 0.6,
+      "description": "tsconfig.json references tsconfig.app.json"
+    },
+    {
+      "source": "config:tsconfig.json",
+      "target": "config:tsconfig.node.json",
+      "type": "configures",
+      "weight": 0.6,
+      "description": "tsconfig.json references tsconfig.node.json"
+    },
+    {
+      "source": "config:tsconfig.app.json",
+      "target": "file:src/main.tsx",
+      "type": "configures",
+      "weight": 0.6,
+      "description": "tsconfig.app.json references src/main.tsx"
+    },
+    {
+      "source": "config:tsconfig.app.json",
+      "target": "file:src/App.tsx",
+      "type": "configures",
+      "weight": 0.6,
+      "description": "tsconfig.app.json references src/App.tsx"
+    },
+    {
+      "source": "config:tsconfig.app.json",
+      "target": "file:src/components/TODO/TodoList.tsx",
+      "type": "configures",
+      "weight": 0.6,
+      "description": "tsconfig.app.json references src/components/TODO/TodoList.tsx"
+    },
+    {
+      "source": "config:tsconfig.app.json",
+      "target": "file:src/components/TODO/TodoListItem.tsx",
+      "type": "configures",
+      "weight": 0.6,
+      "description": "tsconfig.app.json references src/components/TODO/TodoListItem.tsx"
+    },
+    {
+      "source": "config:tsconfig.app.json",
+      "target": "file:src/features/todos/todoSlice.ts",
+      "type": "configures",
+      "weight": 0.6,
+      "description": "tsconfig.app.json references src/features/todos/todoSlice.ts"
+    },
+    {
+      "source": "config:tsconfig.app.json",
+      "target": "file:src/store/store.ts",
+      "type": "configures",
+      "weight": 0.6,
+      "description": "tsconfig.app.json references src/store/store.ts"
+    },
+    {
+      "source": "config:tsconfig.app.json",
+      "target": "file:src/store/hooks.ts",
+      "type": "configures",
+      "weight": 0.6,
+      "description": "tsconfig.app.json references src/store/hooks.ts"
+    },
+    {
+      "source": "config:tsconfig.app.json",
+      "target": "file:src/interfaces/todo.interface.ts",
+      "type": "configures",
+      "weight": 0.6,
+      "description": "tsconfig.app.json references src/interfaces/todo.interface.ts"
+    },
+    {
+      "source": "config:tsconfig.app.json",
+      "target": "file:src/types/TODO.type.ts",
+      "type": "configures",
+      "weight": 0.6,
+      "description": "tsconfig.app.json references src/types/TODO.type.ts"
+    },
+    {
+      "source": "config:tsconfig.app.json",
+      "target": "file:src/index.ts",
+      "type": "configures",
+      "weight": 0.6,
+      "description": "tsconfig.app.json references src/index.ts"
+    },
+    {
+      "source": "config:tsconfig.node.json",
+      "target": "config:vite.config.ts",
+      "type": "configures",
+      "weight": 0.6,
+      "description": "tsconfig.node.json references vite.config.ts"
+    },
+    {
+      "source": "config:vite.config.ts",
+      "target": "config:package.json",
+      "type": "configures",
+      "weight": 0.6,
+      "description": "vite.config.ts references package.json"
+    },
+    {
+      "source": "file:src/main.tsx",
+      "target": "file:src/index.css",
+      "type": "imports",
+      "weight": 0.7,
+      "description": "src/main.tsx references src/index.css"
+    },
+    {
+      "source": "file:src/main.tsx",
+      "target": "file:src/App.tsx",
+      "type": "imports",
+      "weight": 0.7,
+      "description": "src/main.tsx references src/App.tsx"
+    },
+    {
+      "source": "file:src/main.tsx",
+      "target": "file:src/store/store.ts",
+      "type": "imports",
+      "weight": 0.7,
+      "description": "src/main.tsx references src/store/store.ts"
+    },
+    {
+      "source": "file:src/main.tsx",
+      "target": "config:package.json",
+      "type": "imports",
+      "weight": 0.7,
+      "description": "src/main.tsx references package.json"
+    },
+    {
+      "source": "file:src/App.tsx",
+      "target": "file:src/App.css",
+      "type": "imports",
+      "weight": 0.7,
+      "description": "src/App.tsx references src/App.css"
+    },
+    {
+      "source": "file:src/App.tsx",
+      "target": "file:src/components/TODO/TodoList.tsx",
+      "type": "imports",
+      "weight": 0.7,
+      "description": "src/App.tsx references src/components/TODO/TodoList.tsx"
+    },
+    {
+      "source": "file:src/components/TODO/TodoList.tsx",
+      "target": "file:src/interfaces/todo.interface.ts",
+      "type": "imports",
+      "weight": 0.7,
+      "description": "src/components/TODO/TodoList.tsx references src/interfaces/todo.interface.ts"
+    },
+    {
+      "source": "file:src/components/TODO/TodoList.tsx",
+      "target": "file:src/types/TODO.type.ts",
+      "type": "imports",
+      "weight": 0.7,
+      "description": "src/components/TODO/TodoList.tsx references src/types/TODO.type.ts"
+    },
+    {
+      "source": "file:src/components/TODO/TodoList.tsx",
+      "target": "file:src/store/hooks.ts",
+      "type": "imports",
+      "weight": 0.7,
+      "description": "src/components/TODO/TodoList.tsx references src/store/hooks.ts"
+    },
+    {
+      "source": "file:src/components/TODO/TodoList.tsx",
+      "target": "file:src/features/todos/todoSlice.ts",
+      "type": "imports",
+      "weight": 0.7,
+      "description": "src/components/TODO/TodoList.tsx references src/features/todos/todoSlice.ts"
+    },
+    {
+      "source": "file:src/components/TODO/TodoList.tsx",
+      "target": "file:src/components/TODO/TodoListItem.tsx",
+      "type": "imports",
+      "weight": 0.7,
+      "description": "src/components/TODO/TodoList.tsx references src/components/TODO/TodoListItem.tsx"
+    },
+    {
+      "source": "file:src/components/TODO/TodoList.tsx",
+      "target": "config:package.json",
+      "type": "imports",
+      "weight": 0.7,
+      "description": "src/components/TODO/TodoList.tsx references package.json"
+    },
+    {
+      "source": "file:src/components/TODO/TodoListItem.tsx",
+      "target": "file:src/interfaces/todo.interface.ts",
+      "type": "imports",
+      "weight": 0.7,
+      "description": "src/components/TODO/TodoListItem.tsx references src/interfaces/todo.interface.ts"
+    },
+    {
+      "source": "file:src/components/TODO/TodoListItem.tsx",
+      "target": "file:src/store/hooks.ts",
+      "type": "imports",
+      "weight": 0.7,
+      "description": "src/components/TODO/TodoListItem.tsx references src/store/hooks.ts"
+    },
+    {
+      "source": "file:src/components/TODO/TodoListItem.tsx",
+      "target": "file:src/features/todos/todoSlice.ts",
+      "type": "imports",
+      "weight": 0.7,
+      "description": "src/components/TODO/TodoListItem.tsx references src/features/todos/todoSlice.ts"
+    },
+    {
+      "source": "file:src/features/todos/todoSlice.ts",
+      "target": "file:src/interfaces/todo.interface.ts",
+      "type": "imports",
+      "weight": 0.7,
+      "description": "src/features/todos/todoSlice.ts references src/interfaces/todo.interface.ts"
+    },
+    {
+      "source": "file:src/features/todos/todoSlice.ts",
+      "target": "file:src/types/TODO.type.ts",
+      "type": "imports",
+      "weight": 0.7,
+      "description": "src/features/todos/todoSlice.ts references src/types/TODO.type.ts"
+    },
+    {
+      "source": "file:src/features/todos/todoSlice.ts",
+      "target": "config:package.json",
+      "type": "imports",
+      "weight": 0.7,
+      "description": "src/features/todos/todoSlice.ts references package.json"
+    },
+    {
+      "source": "file:src/store/store.ts",
+      "target": "file:src/features/todos/todoSlice.ts",
+      "type": "imports",
+      "weight": 0.7,
+      "description": "src/store/store.ts references src/features/todos/todoSlice.ts"
+    },
+    {
+      "source": "file:src/store/store.ts",
+      "target": "config:package.json",
+      "type": "imports",
+      "weight": 0.7,
+      "description": "src/store/store.ts references package.json"
+    },
+    {
+      "source": "file:src/store/hooks.ts",
+      "target": "file:src/store/store.ts",
+      "type": "imports",
+      "weight": 0.7,
+      "description": "src/store/hooks.ts references src/store/store.ts"
+    },
+    {
+      "source": "file:src/store/hooks.ts",
+      "target": "config:package.json",
+      "type": "imports",
+      "weight": 0.7,
+      "description": "src/store/hooks.ts references package.json"
+    },
+    {
+      "source": "document:README.md",
+      "target": "config:package.json",
+      "type": "documents",
+      "weight": 0.5,
+      "description": "README describes the React Vite project defined by the package manifest."
+    },
+    {
+      "source": "config:package.json",
+      "target": "config:vite.config.ts",
+      "type": "configures",
+      "weight": 0.6,
+      "description": "Package scripts invoke the Vite build and dev pipeline."
+    },
+    {
+      "source": "config:package.json",
+      "target": "config:eslint.config.js",
+      "type": "configures",
+      "weight": 0.6,
+      "description": "Package lint script runs the ESLint configuration."
+    },
+    {
+      "source": "file:index.html",
+      "target": "file:src/main.tsx",
+      "type": "routes",
+      "weight": 0.5,
+      "description": "The HTML shell loads the React module entry."
+    },
+    {
+      "source": "file:src/main.tsx",
+      "target": "file:src/App.tsx",
+      "type": "calls",
+      "weight": 0.8,
+      "description": "Bootstrap renders App."
+    },
+    {
+      "source": "file:src/main.tsx",
+      "target": "file:src/store/store.ts",
+      "type": "depends_on",
+      "weight": 0.6,
+      "description": "Bootstrap provides the Redux store to React."
+    },
+    {
+      "source": "file:src/App.tsx",
+      "target": "function:src/App.tsx:App",
+      "type": "contains",
+      "weight": 1,
+      "description": "App.tsx contains the App component."
+    },
+    {
+      "source": "file:src/components/TODO/TodoList.tsx",
+      "target": "function:src/components/TODO/TodoList.tsx:TodoList",
+      "type": "contains",
+      "weight": 1,
+      "description": "TodoList.tsx contains TodoList."
+    },
+    {
+      "source": "function:src/components/TODO/TodoList.tsx:TodoList",
+      "target": "function:src/components/TODO/TodoList.tsx:plusClickHandler",
+      "type": "contains",
+      "weight": 1,
+      "description": "TodoList defines the add button handler."
+    },
+    {
+      "source": "file:src/components/TODO/TodoListItem.tsx",
+      "target": "function:src/components/TODO/TodoListItem.tsx:TodoListItem",
+      "type": "contains",
+      "weight": 1,
+      "description": "TodoListItem.tsx contains TodoListItem."
+    },
+    {
+      "source": "file:src/features/todos/todoSlice.ts",
+      "target": "function:src/features/todos/todoSlice.ts:addTodo",
+      "type": "contains",
+      "weight": 1,
+      "description": "todoSlice contains addTodo reducer."
+    },
+    {
+      "source": "file:src/features/todos/todoSlice.ts",
+      "target": "function:src/features/todos/todoSlice.ts:deleteTodo",
+      "type": "contains",
+      "weight": 1,
+      "description": "todoSlice contains deleteTodo reducer."
+    },
+    {
+      "source": "file:src/features/todos/todoSlice.ts",
+      "target": "function:src/features/todos/todoSlice.ts:toggleTodo",
+      "type": "contains",
+      "weight": 1,
+      "description": "todoSlice contains toggleTodo reducer."
+    },
+    {
+      "source": "file:src/features/todos/todoSlice.ts",
+      "target": "function:src/features/todos/todoSlice.ts:setFilter",
+      "type": "contains",
+      "weight": 1,
+      "description": "todoSlice contains setFilter reducer."
+    },
+    {
+      "source": "file:src/interfaces/todo.interface.ts",
+      "target": "class:src/interfaces/todo.interface.ts:TODO",
+      "type": "contains",
+      "weight": 1,
+      "description": "Interface file contains TODO."
+    },
+    {
+      "source": "file:src/types/TODO.type.ts",
+      "target": "class:src/types/TODO.type.ts:TodoFilter",
+      "type": "contains",
+      "weight": 1,
+      "description": "Type file contains TodoFilter."
+    },
+    {
+      "source": "function:src/components/TODO/TodoList.tsx:TodoList",
+      "target": "file:src/store/hooks.ts",
+      "type": "calls",
+      "weight": 0.8,
+      "description": "TodoList calls typed selector and dispatch hooks."
+    },
+    {
+      "source": "function:src/components/TODO/TodoList.tsx:TodoList",
+      "target": "function:src/features/todos/todoSlice.ts:addTodo",
+      "type": "calls",
+      "weight": 0.8,
+      "description": "TodoList dispatches addTodo."
+    },
+    {
+      "source": "function:src/components/TODO/TodoList.tsx:TodoList",
+      "target": "function:src/features/todos/todoSlice.ts:setFilter",
+      "type": "calls",
+      "weight": 0.8,
+      "description": "TodoList dispatches setFilter."
+    },
+    {
+      "source": "function:src/components/TODO/TodoList.tsx:TodoList",
+      "target": "function:src/components/TODO/TodoListItem.tsx:TodoListItem",
+      "type": "calls",
+      "weight": 0.8,
+      "description": "TodoList renders TodoListItem for filtered todos."
+    },
+    {
+      "source": "function:src/components/TODO/TodoListItem.tsx:TodoListItem",
+      "target": "function:src/features/todos/todoSlice.ts:toggleTodo",
+      "type": "calls",
+      "weight": 0.8,
+      "description": "TodoListItem dispatches toggleTodo from checkbox changes."
+    },
+    {
+      "source": "function:src/components/TODO/TodoListItem.tsx:TodoListItem",
+      "target": "function:src/features/todos/todoSlice.ts:deleteTodo",
+      "type": "calls",
+      "weight": 0.8,
+      "description": "TodoListItem dispatches deleteTodo from delete button clicks."
+    },
+    {
+      "source": "file:src/store/store.ts",
+      "target": "file:src/features/todos/todoSlice.ts",
+      "type": "depends_on",
+      "weight": 0.6,
+      "description": "Redux store installs the todos reducer."
+    },
+    {
+      "source": "file:src/store/hooks.ts",
+      "target": "file:src/store/store.ts",
+      "type": "depends_on",
+      "weight": 0.6,
+      "description": "Typed hooks derive types from the configured store."
+    },
+    {
+      "source": "file:src/features/todos/todoSlice.ts",
+      "target": "class:src/interfaces/todo.interface.ts:TODO",
+      "type": "validates",
+      "weight": 0.5,
+      "description": "Todo state is typed with the TODO interface."
+    },
+    {
+      "source": "file:src/features/todos/todoSlice.ts",
+      "target": "class:src/types/TODO.type.ts:TodoFilter",
+      "type": "validates",
+      "weight": 0.5,
+      "description": "Todo state filter uses TodoFilter."
+    },
+    {
+      "source": "concept:todo-state-flow",
+      "target": "file:src/components/TODO/TodoList.tsx",
+      "type": "related",
+      "weight": 0.5,
+      "description": "TodoList initiates and reads todo state flow."
+    },
+    {
+      "source": "concept:todo-state-flow",
+      "target": "file:src/features/todos/todoSlice.ts",
+      "type": "related",
+      "weight": 0.5,
+      "description": "todoSlice mutates todo state flow."
+    },
+    {
+      "source": "concept:todo-state-flow",
+      "target": "file:src/store/store.ts",
+      "type": "related",
+      "weight": 0.5,
+      "description": "store wires reducer state flow."
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer:documentation-and-project-config",
+      "name": "Documentation and Project Config",
+      "description": "Repository documentation and toolchain configuration for Vite, TypeScript, ESLint, npm scripts, and the HTML shell.",
+      "nodeIds": [
+        "document:README.md",
+        "config:package.json",
+        "config:eslint.config.js",
+        "config:tsconfig.json",
+        "config:tsconfig.app.json",
+        "config:tsconfig.node.json",
+        "config:vite.config.ts",
+        "file:index.html"
+      ]
+    },
+    {
+      "id": "layer:application-shell-and-styles",
+      "name": "Application Shell and Styles",
+      "description": "React bootstrap, top-level app component, standalone script, and CSS assets that shape global and app-level presentation.",
+      "nodeIds": [
+        "file:src/main.tsx",
+        "file:src/App.tsx",
+        "function:src/App.tsx:App",
+        "file:src/index.ts",
+        "file:src/index.css",
+        "file:src/App.css"
+      ]
+    },
+    {
+      "id": "layer:todo-ui",
+      "name": "Todo UI",
+      "description": "React components that present todos, accept user input, and dispatch user interactions to Redux.",
+      "nodeIds": [
+        "file:src/components/TODO/TodoList.tsx",
+        "function:src/components/TODO/TodoList.tsx:TodoList",
+        "function:src/components/TODO/TodoList.tsx:plusClickHandler",
+        "file:src/components/TODO/TodoListItem.tsx",
+        "function:src/components/TODO/TodoListItem.tsx:TodoListItem"
+      ]
+    },
+    {
+      "id": "layer:state-management-and-domain-types",
+      "name": "State Management and Domain Types",
+      "description": "Redux store setup, typed hooks, todo reducers, and TypeScript domain types for todo data and filters.",
+      "nodeIds": [
+        "file:src/features/todos/todoSlice.ts",
+        "function:src/features/todos/todoSlice.ts:addTodo",
+        "function:src/features/todos/todoSlice.ts:deleteTodo",
+        "function:src/features/todos/todoSlice.ts:toggleTodo",
+        "function:src/features/todos/todoSlice.ts:setFilter",
+        "file:src/store/store.ts",
+        "file:src/store/hooks.ts",
+        "file:src/interfaces/todo.interface.ts",
+        "class:src/interfaces/todo.interface.ts:TODO",
+        "file:src/types/TODO.type.ts",
+        "class:src/types/TODO.type.ts:TodoFilter",
+        "concept:todo-state-flow"
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "order": 1,
+      "title": "Project Overview",
+      "description": "Start with the README and package manifest to understand this as a Vite React TypeScript app with Redux Toolkit and Tailwind CSS.",
+      "nodeIds": [
+        "document:README.md",
+        "config:package.json"
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Build and Runtime Shell",
+      "description": "Review Vite, TypeScript, HTML, and CSS entry files to see how the browser app is compiled, mounted, and styled.",
+      "nodeIds": [
+        "config:vite.config.ts",
+        "config:tsconfig.app.json",
+        "file:index.html",
+        "file:src/main.tsx",
+        "file:src/index.css"
+      ]
+    },
+    {
+      "order": 3,
+      "title": "Top-Level React Composition",
+      "description": "Follow the bootstrap into App, which renders the todo feature as the main application surface.",
+      "nodeIds": [
+        "file:src/main.tsx",
+        "file:src/App.tsx",
+        "function:src/App.tsx:App"
+      ]
+    },
+    {
+      "order": 4,
+      "title": "Todo Interaction UI",
+      "description": "Inspect TodoList and TodoListItem to understand input handling, filtering, item rendering, toggle, and delete interactions.",
+      "nodeIds": [
+        "file:src/components/TODO/TodoList.tsx",
+        "function:src/components/TODO/TodoList.tsx:TodoList",
+        "file:src/components/TODO/TodoListItem.tsx",
+        "function:src/components/TODO/TodoListItem.tsx:TodoListItem"
+      ]
+    },
+    {
+      "order": 5,
+      "title": "Redux State Flow",
+      "description": "Finish with the Redux store, typed hooks, reducers, and domain types that carry todo data between UI and state.",
+      "nodeIds": [
+        "file:src/store/store.ts",
+        "file:src/store/hooks.ts",
+        "file:src/features/todos/todoSlice.ts",
+        "file:src/interfaces/todo.interface.ts",
+        "file:src/types/TODO.type.ts",
+        "concept:todo-state-flow"
+      ]
+    }
+  ]
+}

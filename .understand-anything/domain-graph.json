@@ -1,0 +1,426 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "practice",
+    "languages": [
+      "TypeScript",
+      "TSX",
+      "JavaScript"
+    ],
+    "frameworks": [
+      "React",
+      "Redux Toolkit",
+      "React Redux",
+      "Vite",
+      "Tailwind CSS"
+    ],
+    "description": "A browser-based todo list for capturing tasks, tracking completion, and narrowing the visible work with status filters.",
+    "analyzedAt": "2026-05-20T09:19:29Z",
+    "gitCommitHash": "unavailable"
+  },
+  "nodes": [
+    {
+      "id": "domain-task-capture",
+      "type": "domain",
+      "name": "Task Capture",
+      "summary": "Handles collecting new todo text from the user and turning it into tracked work items.",
+      "tags": [
+        "todos",
+        "input"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "domain-task-review",
+      "type": "domain",
+      "name": "Task Review",
+      "summary": "Handles viewing existing todos, changing their status, removing them, and filtering the list.",
+      "tags": [
+        "todos",
+        "status"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "flow-create-todo-entry",
+      "type": "flow",
+      "name": "Create Todo Entry",
+      "summary": "Moves a typed task from the input field into Redux state as a new incomplete todo.",
+      "tags": [
+        "create",
+        "todos"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "flow-filter-visible-todos",
+      "type": "flow",
+      "name": "Filter Visible Todos",
+      "summary": "Lets the user choose which subset of todos should be shown in the list.",
+      "tags": [
+        "filter",
+        "visibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "flow-toggle-todo-completion",
+      "type": "flow",
+      "name": "Toggle Todo Completion",
+      "summary": "Lets the user mark a todo complete or incomplete directly from the list.",
+      "tags": [
+        "toggle",
+        "completion"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "flow-delete-todo-entry",
+      "type": "flow",
+      "name": "Delete Todo Entry",
+      "summary": "Removes a todo item from the tracked list when the delete action is used.",
+      "tags": [
+        "delete",
+        "cleanup"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "step-capture-input-text",
+      "type": "step",
+      "name": "Capture Input Text",
+      "summary": "Stores the current text box value in local component state while the user types a task.",
+      "tags": [
+        "input",
+        "react-state"
+      ],
+      "complexity": "simple",
+      "filePaths": [
+        "src/components/TODO/TodoList.tsx"
+      ],
+      "filePath": "src/components/TODO/TodoList.tsx"
+    },
+    {
+      "id": "step-dispatch-add-todo",
+      "type": "step",
+      "name": "Dispatch Add Todo",
+      "summary": "Submits the current input value through the addTodo action and clears the text field after the click.",
+      "tags": [
+        "dispatch",
+        "create"
+      ],
+      "complexity": "simple",
+      "filePaths": [
+        "src/components/TODO/TodoList.tsx"
+      ],
+      "filePath": "src/components/TODO/TodoList.tsx"
+    },
+    {
+      "id": "step-store-normalized-todo",
+      "type": "step",
+      "name": "Store Normalized Todo",
+      "summary": "Creates a new todo with a generated id, trimmed text, and a false completed flag in Redux state.",
+      "tags": [
+        "redux",
+        "normalization"
+      ],
+      "complexity": "moderate",
+      "filePaths": [
+        "src/features/todos/todoSlice.ts"
+      ],
+      "filePath": "src/features/todos/todoSlice.ts"
+    },
+    {
+      "id": "step-select-filter-value",
+      "type": "step",
+      "name": "Select Filter Value",
+      "summary": "Captures the user's filter selection from the dropdown and dispatches it to the store.",
+      "tags": [
+        "filter",
+        "dispatch"
+      ],
+      "complexity": "simple",
+      "filePaths": [
+        "src/components/TODO/TodoList.tsx"
+      ],
+      "filePath": "src/components/TODO/TodoList.tsx"
+    },
+    {
+      "id": "step-store-filter-state",
+      "type": "step",
+      "name": "Store Filter State",
+      "summary": "Persists the selected filter string as the active todo visibility mode in Redux state.",
+      "tags": [
+        "redux",
+        "filter"
+      ],
+      "complexity": "simple",
+      "filePaths": [
+        "src/features/todos/todoSlice.ts"
+      ],
+      "filePath": "src/features/todos/todoSlice.ts"
+    },
+    {
+      "id": "step-derive-filtered-list",
+      "type": "step",
+      "name": "Derive Filtered List",
+      "summary": "Builds the visible todo list by checking the active filter against each todo's completed flag.",
+      "tags": [
+        "filter",
+        "rendering"
+      ],
+      "complexity": "moderate",
+      "filePaths": [
+        "src/components/TODO/TodoList.tsx"
+      ],
+      "filePath": "src/components/TODO/TodoList.tsx"
+    },
+    {
+      "id": "step-render-toggle-control",
+      "type": "step",
+      "name": "Render Toggle Control",
+      "summary": "Shows each todo with a checkbox that reflects its current completion state.",
+      "tags": [
+        "checkbox",
+        "ui"
+      ],
+      "complexity": "simple",
+      "filePaths": [
+        "src/components/TODO/TodoListItem.tsx"
+      ],
+      "filePath": "src/components/TODO/TodoListItem.tsx"
+    },
+    {
+      "id": "step-dispatch-toggle-todo",
+      "type": "step",
+      "name": "Dispatch Toggle Todo",
+      "summary": "Sends the clicked todo id through the toggleTodo action when the checkbox changes.",
+      "tags": [
+        "dispatch",
+        "toggle"
+      ],
+      "complexity": "simple",
+      "filePaths": [
+        "src/components/TODO/TodoListItem.tsx"
+      ],
+      "filePath": "src/components/TODO/TodoListItem.tsx"
+    },
+    {
+      "id": "step-update-completion-state",
+      "type": "step",
+      "name": "Update Completion State",
+      "summary": "Rebuilds the todos array so the matching item flips between completed and incomplete.",
+      "tags": [
+        "redux",
+        "completion"
+      ],
+      "complexity": "moderate",
+      "filePaths": [
+        "src/features/todos/todoSlice.ts"
+      ],
+      "filePath": "src/features/todos/todoSlice.ts"
+    },
+    {
+      "id": "step-render-delete-control",
+      "type": "step",
+      "name": "Render Delete Control",
+      "summary": "Shows a delete button beside each todo so the user can remove it from the list.",
+      "tags": [
+        "delete",
+        "ui"
+      ],
+      "complexity": "simple",
+      "filePaths": [
+        "src/components/TODO/TodoListItem.tsx"
+      ],
+      "filePath": "src/components/TODO/TodoListItem.tsx"
+    },
+    {
+      "id": "step-dispatch-delete-todo",
+      "type": "step",
+      "name": "Dispatch Delete Todo",
+      "summary": "Sends the selected todo id through the deleteTodo action when the delete button is clicked.",
+      "tags": [
+        "dispatch",
+        "delete"
+      ],
+      "complexity": "simple",
+      "filePaths": [
+        "src/components/TODO/TodoListItem.tsx"
+      ],
+      "filePath": "src/components/TODO/TodoListItem.tsx"
+    },
+    {
+      "id": "step-remove-todo-from-state",
+      "type": "step",
+      "name": "Remove Todo From State",
+      "summary": "Filters the Redux todo list so the matching id is removed from the stored items.",
+      "tags": [
+        "redux",
+        "delete"
+      ],
+      "complexity": "simple",
+      "filePaths": [
+        "src/features/todos/todoSlice.ts"
+      ],
+      "filePath": "src/features/todos/todoSlice.ts"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-domain-task-capture-contains-flow-create-todo-entry",
+      "type": "contains_flow",
+      "source": "domain-task-capture",
+      "target": "flow-create-todo-entry",
+      "summary": "Task Capture includes the flow for creating new todo entries.",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "id": "edge-domain-task-review-contains-flow-filter-visible-todos",
+      "type": "contains_flow",
+      "source": "domain-task-review",
+      "target": "flow-filter-visible-todos",
+      "summary": "Task Review includes the flow for filtering which todos are shown.",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "id": "edge-domain-task-review-contains-flow-toggle-todo-completion",
+      "type": "contains_flow",
+      "source": "domain-task-review",
+      "target": "flow-toggle-todo-completion",
+      "summary": "Task Review includes the flow for changing completion status.",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "id": "edge-domain-task-review-contains-flow-delete-todo-entry",
+      "type": "contains_flow",
+      "source": "domain-task-review",
+      "target": "flow-delete-todo-entry",
+      "summary": "Task Review includes the flow for deleting todo entries.",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "id": "edge-flow-create-todo-entry-step-capture-input-text",
+      "type": "flow_step",
+      "source": "flow-create-todo-entry",
+      "target": "step-capture-input-text",
+      "weight": 0,
+      "summary": "The create flow starts with capturing the task text locally.",
+      "direction": "forward"
+    },
+    {
+      "id": "edge-flow-create-todo-entry-step-dispatch-add-todo",
+      "type": "flow_step",
+      "source": "flow-create-todo-entry",
+      "target": "step-dispatch-add-todo",
+      "weight": 0.5,
+      "summary": "The create flow next dispatches the add action.",
+      "direction": "forward"
+    },
+    {
+      "id": "edge-flow-create-todo-entry-step-store-normalized-todo",
+      "type": "flow_step",
+      "source": "flow-create-todo-entry",
+      "target": "step-store-normalized-todo",
+      "weight": 1,
+      "summary": "The create flow ends by persisting the normalized todo in state.",
+      "direction": "forward"
+    },
+    {
+      "id": "edge-flow-filter-visible-todos-step-select-filter-value",
+      "type": "flow_step",
+      "source": "flow-filter-visible-todos",
+      "target": "step-select-filter-value",
+      "weight": 0,
+      "summary": "The filter flow starts with selecting a visibility mode.",
+      "direction": "forward"
+    },
+    {
+      "id": "edge-flow-filter-visible-todos-step-store-filter-state",
+      "type": "flow_step",
+      "source": "flow-filter-visible-todos",
+      "target": "step-store-filter-state",
+      "weight": 0.5,
+      "summary": "The filter flow stores the chosen filter in Redux.",
+      "direction": "forward"
+    },
+    {
+      "id": "edge-flow-filter-visible-todos-step-derive-filtered-list",
+      "type": "flow_step",
+      "source": "flow-filter-visible-todos",
+      "target": "step-derive-filtered-list",
+      "weight": 1,
+      "summary": "The filter flow finishes by deriving the visible list.",
+      "direction": "forward"
+    },
+    {
+      "id": "edge-flow-toggle-todo-completion-step-render-toggle-control",
+      "type": "flow_step",
+      "source": "flow-toggle-todo-completion",
+      "target": "step-render-toggle-control",
+      "weight": 0,
+      "summary": "The completion flow begins by exposing the checkbox control.",
+      "direction": "forward"
+    },
+    {
+      "id": "edge-flow-toggle-todo-completion-step-dispatch-toggle-todo",
+      "type": "flow_step",
+      "source": "flow-toggle-todo-completion",
+      "target": "step-dispatch-toggle-todo",
+      "weight": 0.5,
+      "summary": "The completion flow dispatches the toggle action when the checkbox changes.",
+      "direction": "forward"
+    },
+    {
+      "id": "edge-flow-toggle-todo-completion-step-update-completion-state",
+      "type": "flow_step",
+      "source": "flow-toggle-todo-completion",
+      "target": "step-update-completion-state",
+      "weight": 1,
+      "summary": "The completion flow ends by flipping the stored completion state.",
+      "direction": "forward"
+    },
+    {
+      "id": "edge-flow-delete-todo-entry-step-render-delete-control",
+      "type": "flow_step",
+      "source": "flow-delete-todo-entry",
+      "target": "step-render-delete-control",
+      "weight": 0,
+      "summary": "The delete flow starts by exposing the delete action in each row.",
+      "direction": "forward"
+    },
+    {
+      "id": "edge-flow-delete-todo-entry-step-dispatch-delete-todo",
+      "type": "flow_step",
+      "source": "flow-delete-todo-entry",
+      "target": "step-dispatch-delete-todo",
+      "weight": 0.5,
+      "summary": "The delete flow dispatches the selected todo id.",
+      "direction": "forward"
+    },
+    {
+      "id": "edge-flow-delete-todo-entry-step-remove-todo-from-state",
+      "type": "flow_step",
+      "source": "flow-delete-todo-entry",
+      "target": "step-remove-todo-from-state",
+      "weight": 1,
+      "summary": "The delete flow ends by removing the matching todo from Redux state.",
+      "direction": "forward"
+    },
+    {
+      "id": "edge-domain-task-capture-cross-domain-task-review",
+      "type": "cross_domain",
+      "source": "domain-task-capture",
+      "target": "domain-task-review",
+      "summary": "Newly captured todos become the items later reviewed, filtered, toggled, and deleted.",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ],
+  "layers": [],
+  "tour": []
+}

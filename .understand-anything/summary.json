@@ -1,0 +1,63 @@
+{
+  "project": {
+    "name": "practice",
+    "languages": [
+      "TypeScript",
+      "TSX",
+      "CSS",
+      "HTML",
+      "JSON",
+      "JavaScript",
+      "Markdown"
+    ],
+    "frameworks": [
+      "React",
+      "Vite",
+      "Redux Toolkit",
+      "React Redux",
+      "Tailwind CSS"
+    ],
+    "description": "A React, TypeScript, Vite, Tailwind CSS, and Redux Toolkit todo application.",
+    "analyzedAt": "2026-05-20T09:38:31.638Z",
+    "gitCommitHash": "no-head-uncommitted-worktree"
+  },
+  "filesAnalyzed": 20,
+  "fileCategoryBreakdown": {
+    "docs": 1,
+    "config": 6,
+    "markup": 3,
+    "code": 10
+  },
+  "nodeTypes": {
+    "document": 1,
+    "config": 6,
+    "file": 13,
+    "function": 8,
+    "class": 2,
+    "concept": 1
+  },
+  "edgeTypes": {
+    "imports": 23,
+    "configures": 16,
+    "documents": 1,
+    "routes": 1,
+    "calls": 7,
+    "depends_on": 3,
+    "contains": 10,
+    "validates": 2,
+    "related": 3
+  },
+  "layers": [
+    "Documentation and Project Config",
+    "Application Shell and Styles",
+    "Todo UI",
+    "State Management and Domain Types"
+  ],
+  "tourSteps": 5,
+  "validationIssues": [],
+  "validationWarnings": [],
+  "phaseWarnings": [
+    "Bundled merge-batch-graphs.py could not run because available python3 does not support PEP 604 union syntax; graph was assembled from the normalized single batch."
+  ],
+  "outputPath": "/Users/cyril.chan/WebstormProjects/practice/.understand-anything/knowledge-graph.json"
+}

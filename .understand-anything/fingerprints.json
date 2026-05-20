@@ -1,0 +1,371 @@
+{
+  "version": "1.0.0",
+  "gitCommitHash": "no-head-uncommitted-worktree",
+  "generatedAt": "2026-05-20T09:39:06.436Z",
+  "files": {
+    "eslint.config.js": {
+      "filePath": "eslint.config.js",
+      "contentHash": "cf80a7510234dcd5ae594b30b44682b8b45ba13c0fcb5bf8928bea143802aa1c",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@eslint/js",
+          "specifiers": [
+            "js"
+          ]
+        },
+        {
+          "source": "globals",
+          "specifiers": [
+            "globals"
+          ]
+        },
+        {
+          "source": "eslint-plugin-react-hooks",
+          "specifiers": [
+            "reactHooks"
+          ]
+        },
+        {
+          "source": "eslint-plugin-react-refresh",
+          "specifiers": [
+            "reactRefresh"
+          ]
+        },
+        {
+          "source": "typescript-eslint",
+          "specifiers": [
+            "tseslint"
+          ]
+        },
+        {
+          "source": "eslint/config",
+          "specifiers": [
+            "defineConfig",
+            "globalIgnores"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 23,
+      "hasStructuralAnalysis": true
+    },
+    "vite.config.ts": {
+      "filePath": "vite.config.ts",
+      "contentHash": "3019a310230f516f15d14b1184353be7ef46f56d29c655a7a60d53d2f516e3e3",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "vite",
+          "specifiers": [
+            "defineConfig"
+          ]
+        },
+        {
+          "source": "@vitejs/plugin-react",
+          "specifiers": [
+            "react"
+          ]
+        },
+        {
+          "source": "@tailwindcss/vite",
+          "specifiers": [
+            "tailwindcss"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "src/main.tsx": {
+      "filePath": "src/main.tsx",
+      "contentHash": "65d41932cf2dd35892d78df917873f51b216e07092860c8f006998efd5db185c",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "react",
+          "specifiers": [
+            "StrictMode"
+          ]
+        },
+        {
+          "source": "react-dom/client",
+          "specifiers": [
+            "createRoot"
+          ]
+        },
+        {
+          "source": "./index.css",
+          "specifiers": []
+        },
+        {
+          "source": "./App.tsx",
+          "specifiers": [
+            "App"
+          ]
+        },
+        {
+          "source": "react-redux",
+          "specifiers": [
+            "Provider"
+          ]
+        },
+        {
+          "source": "./store/store.ts",
+          "specifiers": [
+            "store"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 15,
+      "hasStructuralAnalysis": true
+    },
+    "src/App.tsx": {
+      "filePath": "src/App.tsx",
+      "contentHash": "0ed64a3e715545c8b20175e4314fc9d8ec1868d54044b15460996306696bddb2",
+      "functions": [
+        {
+          "name": "App",
+          "params": [],
+          "exported": false,
+          "lineCount": 8
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "./App.css",
+          "specifiers": []
+        },
+        {
+          "source": "./components/TODO/TodoList.tsx",
+          "specifiers": [
+            "TodoList"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 15,
+      "hasStructuralAnalysis": true
+    },
+    "src/components/TODO/TodoList.tsx": {
+      "filePath": "src/components/TODO/TodoList.tsx",
+      "contentHash": "d9c537c3fc227086cc72d8922f4438acfa597d036004b60b0c92ad1cd023bcd2",
+      "functions": [
+        {
+          "name": "TodoList",
+          "params": [],
+          "exported": true,
+          "lineCount": 62
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "../../interfaces/todo.interface.ts",
+          "specifiers": [
+            "TODO"
+          ]
+        },
+        {
+          "source": "react",
+          "specifiers": [
+            "useState"
+          ]
+        },
+        {
+          "source": "./TodoListItem.tsx",
+          "specifiers": [
+            "TodoListItem"
+          ]
+        },
+        {
+          "source": "../../types/TODO.type.ts",
+          "specifiers": [
+            "TodoFilter"
+          ]
+        },
+        {
+          "source": "../../store/hooks.ts",
+          "specifiers": [
+            "useAppDispatch",
+            "useAppSelector"
+          ]
+        },
+        {
+          "source": "../../features/todos/todoSlice.ts",
+          "specifiers": [
+            "addTodo",
+            "setFilter"
+          ]
+        }
+      ],
+      "exports": [
+        "TodoList"
+      ],
+      "totalLines": 70,
+      "hasStructuralAnalysis": true
+    },
+    "src/components/TODO/TodoListItem.tsx": {
+      "filePath": "src/components/TODO/TodoListItem.tsx",
+      "contentHash": "becdc9417717d21ec3cf8f2699ad4cd8ba6fe2825182656fd7e44bb0992a6e3f",
+      "functions": [
+        {
+          "name": "TodoListItem",
+          "params": [
+            "{\n        todo ,\n    }"
+          ],
+          "exported": true,
+          "lineCount": 24
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "../../interfaces/todo.interface.ts",
+          "specifiers": [
+            "TODO"
+          ]
+        },
+        {
+          "source": "../../store/hooks.ts",
+          "specifiers": [
+            "useAppDispatch"
+          ]
+        },
+        {
+          "source": "../../features/todos/todoSlice.ts",
+          "specifiers": [
+            "deleteTodo",
+            "toggleTodo"
+          ]
+        }
+      ],
+      "exports": [
+        "TodoListItem"
+      ],
+      "totalLines": 28,
+      "hasStructuralAnalysis": true
+    },
+    "src/features/todos/todoSlice.ts": {
+      "filePath": "src/features/todos/todoSlice.ts",
+      "contentHash": "40923e128b5763e0c575b6da247b051827c161ad460ee163a8e342af35565a70",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "../../interfaces/todo.interface.ts",
+          "specifiers": [
+            "TODO"
+          ]
+        },
+        {
+          "source": "../../types/TODO.type.ts",
+          "specifiers": [
+            "TodoFilter"
+          ]
+        },
+        {
+          "source": "@reduxjs/toolkit",
+          "specifiers": [
+            "createSlice",
+            "PayloadAction"
+          ]
+        }
+      ],
+      "exports": [
+        "{\n    addTodo,\n    deleteTodo,\n    toggleTodo,\n    setFilter,\n}"
+      ],
+      "totalLines": 53,
+      "hasStructuralAnalysis": true
+    },
+    "src/store/store.ts": {
+      "filePath": "src/store/store.ts",
+      "contentHash": "a60d3dd685f5613b0a3c6333cee2d865c455398b530368a9cfdf7724a6a1d1ae",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@reduxjs/toolkit",
+          "specifiers": [
+            "configureStore"
+          ]
+        },
+        {
+          "source": "../features/todos/todoSlice.ts",
+          "specifiers": [
+            "todoSlice"
+          ]
+        }
+      ],
+      "exports": [
+        "store"
+      ],
+      "totalLines": 11,
+      "hasStructuralAnalysis": true
+    },
+    "src/store/hooks.ts": {
+      "filePath": "src/store/hooks.ts",
+      "contentHash": "e1d0881637747c26191c83e2b51f4d96c5d50ce2053a76e495bc58dd90b4f86e",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "react-redux",
+          "specifiers": [
+            "useDispatch",
+            "useSelector"
+          ]
+        },
+        {
+          "source": "./store.ts",
+          "specifiers": [
+            "AppDispatch",
+            "RootState"
+          ]
+        }
+      ],
+      "exports": [
+        "useAppDispatch",
+        "useAppSelector"
+      ],
+      "totalLines": 5,
+      "hasStructuralAnalysis": true
+    },
+    "src/interfaces/todo.interface.ts": {
+      "filePath": "src/interfaces/todo.interface.ts",
+      "contentHash": "10a2ba72fb11b45369682a06733eaa300457f295aa025c39faa147e08dabb055",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 5,
+      "hasStructuralAnalysis": true
+    },
+    "src/types/TODO.type.ts": {
+      "filePath": "src/types/TODO.type.ts",
+      "contentHash": "49436b74a85bff2f3a6157278f81e18c4be803cae72a2b0ff26a4230006dbbbd",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "src/index.ts": {
+      "filePath": "src/index.ts",
+      "contentHash": "96b56c2fbd7700af3f83365398c7bd3c18c50648aa016cbc4f66d3f11fc28bbd",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": true
+    }
+  }
+}
