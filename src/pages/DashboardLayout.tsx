@@ -20,6 +20,12 @@ export default function DashboardLayout() {
                         <li>
                             <Link to="tasks/notesPanel">Notes Panel</Link>
                         </li>
+                        <li>
+                            <Link to="tasks/notifications">Notes Panel</Link>
+                        </li>
+                        <li>
+                            <Link to="tasks/randomRenderOverlay">Random Render Overlay</Link>
+                        </li>
                     </ul>
                 </nav>
             </header>

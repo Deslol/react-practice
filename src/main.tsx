@@ -5,6 +5,7 @@ import {Provider} from "react-redux";
 import {store} from "./store/redux/store.ts";
 import {RouterProvider} from "react-router/dom";
 import {router} from "./router.tsx";
+import '../proto-test.ts'
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>

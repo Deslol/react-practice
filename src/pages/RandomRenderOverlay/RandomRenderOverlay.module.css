@@ -1,0 +1,33 @@
+.overlayContainer {
+    height: 100%;
+    width: 100%;
+    background-color: rgba(255, 255, 0, 30%);
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.gameContainer {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 1fr 2fr 1fr;
+    background-color: rgba(255, 0, 0, 0.5);
+    height: 100vh;
+    width: 100%;
+}
+
+.testLayer {
+    position: relative;
+}
+
+.randomItem {
+    position: absolute;
+    animation: fadeInOut 1500ms linear forwards;
+    height: 18px;
+    width: 24px;
+}
+
+@keyframes fadeInOut {
+    0%,100% { opacity: 0; }
+    50% { opacity: 1; }
+}

@@ -4,6 +4,8 @@ import DashboardHome from "./pages/DashboardHome.tsx";
 import TodoPage from "./pages/TodoPage.tsx";
 import CounterPage from "./pages/CounterPage.tsx";
 import NotePanelPage from "./pages/NotePanelPage.tsx";
+import NotificationsPage from "./pages/NotificationsPage.tsx";
+import RandomRenderOverlay from "./pages/RandomRenderOverlay/RandomRenderOverlay.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -28,6 +30,14 @@ export const router = createBrowserRouter([
                     {
                         path: "notesPanel",
                         Component: NotePanelPage
+                    },
+                    {
+                        path: "notifications",
+                        Component: NotificationsPage
+                    },
+                    {
+                        path: 'randomRenderOverlay',
+                        Component: RandomRenderOverlay
                     }
                 ]
             }
