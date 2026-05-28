@@ -20,36 +20,87 @@ function startMockSocket(
         width: 300,
         height: 300
     }
-){
+) {
     const intervalId = setInterval(() => {
-        const newItem: Item = {
-            id: Math.random()*1000000000000,
-            text: 'abc',
-            x: Math.random() * Math.max(0, size.width - MOCK_ITEM_SIZE.width),
-            y: Math.random() * Math.max(0, size.height - MOCK_ITEM_SIZE.height),
-        };
-        setItems((prev) => [...prev, newItem]);
+        // const newItem: Item = {
+        //     id: Math.random() * 1000000000000,
+        //     text: 'abc',
+        //     x: Math.random() * Math.max(0, size.width - MOCK_ITEM_SIZE.width),
+        //     y: Math.random() * Math.max(0, size.height - MOCK_ITEM_SIZE.height),
+        // };
+        setItems((prev) => {
+            const position = getNonOverlappingPosition(prev, size);
+            if (!position) return prev
+
+            const newItem: Item = {
+                id: Math.random() * 1000000000000,
+                text: 'abc',
+                x: position.x,
+                y: position.y,
+            };
+
+            return [...prev, newItem]
+        });
     }, frequency);
 
-    return ()=> {
+    return () => {
         clearInterval(intervalId);
     }
 }
 
-export default function RandomRenderOverlay() {
-    function rngRender(length = 10): Item[] {
-        return Array.from({length}, (_, i) => {
-            return {
-                id: i,
-                text: i.toString(),
-                x: Math.random() * 300,
-                y: Math.random() * 300,
-            }
-        })
+function getNonOverlappingPosition(
+    items: Item[],
+    container: { width: number; height: number },
+    gap = MIN_GAP
+) {
+    for (let i = 0; i < MAX_ATTEMPTS; i++) {
+        const candidate = {
+            x: Math.random() * Math.max(0, container.width - MOCK_ITEM_SIZE.width),
+            y: Math.random() * Math.max(0, container.height - MOCK_ITEM_SIZE.height),
+        };
+
+        const testItem: Item = {
+            id: -1,
+            text: '',
+            ...candidate,
+        };
+
+        const overlaps = items.some((item) => isOverlapping(testItem, item, gap));
+
+        if (!overlaps) {
+            return candidate;
+        }
     }
 
+    return null;
+}
+
+const MIN_GAP = 8;
+const MAX_ATTEMPTS = 50;
+
+function isOverlapping(a: Item, b: Item, gap = MIN_GAP) {
+    return !(
+        a.x + MOCK_ITEM_SIZE.width + gap <= b.x ||
+        a.x >= b.x + MOCK_ITEM_SIZE.width + gap ||
+        a.y + MOCK_ITEM_SIZE.height + gap <= b.y ||
+        a.y >= b.y + MOCK_ITEM_SIZE.height + gap
+    );
+}
+
+export default function RandomRenderOverlay() {
+    // function rngRender(length = 10): Item[] {
+    //     return Array.from({length}, (_, i) => {
+    //         return {
+    //             id: i,
+    //             text: i.toString(),
+    //             x: Math.random() * 300,
+    //             y: Math.random() * 300,
+    //         }
+    //     })
+    // }
+
     const removeItem = (id: number) => {
-        setMockItems((prevItems) => prevItems.filter((item:Item) => item.id !== id));
+        setMockItems((prevItems) => prevItems.filter((item: Item) => item.id !== id));
     };
 
     const overlayContainerRef = useRef<HTMLDivElement>(null);
@@ -75,7 +126,6 @@ export default function RandomRenderOverlay() {
     }, []);
 
 
-
     return (
         <div className={style.gameContainer}>
             <div>a</div>
@@ -83,15 +133,15 @@ export default function RandomRenderOverlay() {
                 <div className={style.overlayContainer} ref={overlayContainerRef}>
                     {mockItems.map((item) =>
                         <p
-                        className={style.randomItem}
-                        key={item.id}
-                        style={{
-                            top: item.y + 'px',
-                            left: item.x + 'px',
-                        }}
-                        onAnimationEnd={() => {
-                            removeItem(item.id)
-                        }}
+                            className={style.randomItem}
+                            key={item.id}
+                            style={{
+                                top: item.y + 'px',
+                                left: item.x + 'px',
+                            }}
+                            onAnimationEnd={() => {
+                                removeItem(item.id)
+                            }}
                         >
                             {item.text}
                         </p>
