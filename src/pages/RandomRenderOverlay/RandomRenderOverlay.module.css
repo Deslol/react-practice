@@ -22,12 +22,49 @@
 
 .randomItem {
     position: absolute;
-    animation: fadeInOut 1500ms linear forwards;
+    /*animation: fadeInOut 1500ms linear forwards;*/
     height: 18px;
     width: 24px;
+
+    font-family: 'ADLaM Display';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    text-align: center;
+
+    background: linear-gradient(0deg, #FFB765 12.5%, #FFE3AC 39.19%, #FFE3AC 51.94%, #FFFFFF 90.62%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+
+    mix-blend-mode: plus-lighter;
+    will-change: opacity, transform;
+    animation: fadeInOut 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+
 }
 
 @keyframes fadeInOut {
-    0%,100% { opacity: 0; }
-    50% { opacity: 1; }
+    0% {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+        filter: blur(1px);
+    }
+
+    15% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+
+    75% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-6px) scale(1.01);
+        filter: blur(1.5px);
+    }
 }
