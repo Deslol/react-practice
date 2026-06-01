@@ -1,45 +1,33 @@
 import style from './RandomRenderOverlay.module.css'
 import {useEffect, useRef, useState} from "react";
 
-interface Item {
+type Team = "red" | "blue";
+type CellId = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+
+interface ChantPayload {
     id: number;
     text: string;
-    x: number;
-    y: number;
+    team: Team;
 }
 
-const MOCK_ITEM_SIZE = {
-    height: 18,
-    width: 24
+interface VisibleChant extends ChantPayload {
+    cellId: CellId;
+    rotation: number;
 }
+
+const CELL_IDS: CellId[] = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 
 function startMockSocket(
-    setItems: React.Dispatch<React.SetStateAction<Item[]>>,
-    frequency = 100,
-    size = {
-        width: 300,
-        height: 300
-    }
+    onMessage: (payload: ChantPayload) => void,
+    frequency = 300,
 ) {
     const intervalId = setInterval(() => {
-        // const newItem: Item = {
-        //     id: Math.random() * 1000000000000,
-        //     text: 'abc',
-        //     x: Math.random() * Math.max(0, size.width - MOCK_ITEM_SIZE.width),
-        //     y: Math.random() * Math.max(0, size.height - MOCK_ITEM_SIZE.height),
-        // };
-        setItems((prev) => {
-            const position = getNonOverlappingPosition(prev, size);
-            if (!position) return prev
+        const team: Team = Math.random() > 0.5 ? 'blue' : 'red';
 
-            const newItem: Item = {
-                id: Math.random() * 1000000000000,
-                text: 'abc',
-                x: position.x,
-                y: position.y,
-            };
-
-            return [...prev, newItem]
+        onMessage({
+            id: Date.now() + Math.random(),
+            text: 'Halajoi',
+            team: team,
         });
     }, frequency);
 
@@ -48,80 +36,79 @@ function startMockSocket(
     }
 }
 
-function getNonOverlappingPosition(
-    items: Item[],
-    container: { width: number; height: number },
-    gap = MIN_GAP
-) {
-    for (let i = 0; i < MAX_ATTEMPTS; i++) {
-        const candidate = {
-            x: Math.random() * Math.max(0, container.width - MOCK_ITEM_SIZE.width),
-            y: Math.random() * Math.max(0, container.height - MOCK_ITEM_SIZE.height),
-        };
-
-        const testItem: Item = {
-            id: -1,
-            text: '',
-            ...candidate,
-        };
-
-        const overlaps = items.some((item) => isOverlapping(testItem, item, gap));
-
-        if (!overlaps) {
-            return candidate;
-        }
-    }
-
-    return null;
+function rng() {
+    return Math.random()
 }
 
-const MIN_GAP = 8;
-const MAX_ATTEMPTS = 50;
-
-function isOverlapping(a: Item, b: Item, gap = MIN_GAP) {
-    return !(
-        a.x + MOCK_ITEM_SIZE.width + gap <= b.x ||
-        a.x >= b.x + MOCK_ITEM_SIZE.width + gap ||
-        a.y + MOCK_ITEM_SIZE.height + gap <= b.y ||
-        a.y >= b.y + MOCK_ITEM_SIZE.height + gap
-    );
+function getRandomRotation() {
+    return rng() * 40 - 20
 }
 
 export default function RandomRenderOverlay() {
-    // function rngRender(length = 10): Item[] {
-    //     return Array.from({length}, (_, i) => {
-    //         return {
-    //             id: i,
-    //             text: i.toString(),
-    //             x: Math.random() * 300,
-    //             y: Math.random() * 300,
-    //         }
-    //     })
-    // }
+    const [visibleChants, setVisibleChants] = useState<VisibleChant[]>([]);
 
-    const removeItem = (id: number) => {
-        setMockItems((prevItems) => prevItems.filter((item: Item) => item.id !== id));
-    };
+    const queueRef = useRef<ChantPayload[]>([])
 
-    const overlayContainerRef = useRef<HTMLDivElement>(null);
-    const [size, setSize] = useState({width: 0, height: 0});
-    const [mockItems, setMockItems] = useState<Item[]>([]);
+    const occupiedCellsRef = useRef<Record<Team, Set<CellId>>>({
+        blue: new Set<CellId>(),
+        red: new Set<CellId>()
+    })
+
+    function getRandomFreeCell(team: Team): CellId | null {
+        const freeCells = CELL_IDS.filter(
+            (cellId) => !occupiedCellsRef.current[team].has(cellId)
+        );
+
+        if (freeCells.length === 0) {
+            return null;
+        }
+
+        return freeCells[
+            Math.floor(rng() * freeCells.length)
+            ] as CellId;
+    }
+
+    function handleIncomingChant(payload: ChantPayload) {
+        queueRef.current.push(payload);
+        tryFlushQueue()
+    }
+
+    function tryFlushQueue() {
+        const nextQueuedItem = queueRef.current[0];
+        if (!nextQueuedItem) return;
+
+        const cellId = getRandomFreeCell(nextQueuedItem.team)
+        if (cellId === null) return;
+
+        queueRef.current.shift()
+
+        showQueuedChant(nextQueuedItem, cellId);
+    }
+
+    function showQueuedChant(payload: ChantPayload, cellId: CellId) {
+        occupiedCellsRef.current[payload.team].add(cellId);
+
+        setVisibleChants((prev) => [
+            ...prev,
+            {
+                ...payload,
+                cellId,
+                rotation: getRandomRotation(),
+            }
+        ])
+    }
+
+    function handleAnimationEnd(payload: ChantPayload, cellId: CellId) {
+        setVisibleChants((prev) => prev.filter((chant) => chant.id !== payload.id))
+        occupiedCellsRef.current[payload.team].delete(cellId);
+        tryFlushQueue()
+    }
 
     useEffect(() => {
-        const containerEl = overlayContainerRef.current;
-        if (!containerEl) return;
-
-        const nextSize = {
-            width: containerEl.offsetWidth,
-            height: containerEl.offsetHeight,
-        };
-
-        setSize(nextSize);
-
-        const mockSocketStop = startMockSocket(setMockItems, 25, nextSize);
+        const stopMockSocket = startMockSocket(handleIncomingChant, 300)
 
         return () => {
-            mockSocketStop();
+            stopMockSocket()
         }
     }, []);
 
@@ -130,22 +117,45 @@ export default function RandomRenderOverlay() {
         <div className={style.gameContainer}>
             <div>a</div>
             <div className={style.testLayer}>
-                <div className={style.overlayContainer} ref={overlayContainerRef}>
-                    {mockItems.map((item) =>
-                        <p
-                            className={style.randomItem}
-                            key={item.id}
-                            style={{
-                                top: item.y + 'px',
-                                left: item.x + 'px',
-                            }}
-                            onAnimationEnd={() => {
-                                removeItem(item.id)
-                            }}
-                        >
-                            {item.text}
-                        </p>
-                    )}
+                <div className={style.overlayLayer}>
+                    <div>
+                        <div className={style.chantContainer}>
+                            {CELL_IDS.map((cellId) => {
+                                const chant = visibleChants.find(
+                                    (item) => item.team === 'red' && item.cellId === cellId,
+                                )
+
+                                return (
+                                    <div key={`red-${cellId}`} className={style.cell}>
+                                        {chant ? <p
+                                            className={style.randomItem}
+                                            style={{ ['--rotation' as string]: `${chant.rotation}deg` }}
+                                            onAnimationEnd={() => handleAnimationEnd(chant, cellId)}
+                                        >{chant.text}</p> : null}
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
+                    <div className="bg-blue-500/50">
+                        <div className={style.chantContainer}>
+                            {CELL_IDS.map((cellId) => {
+                                const chant = visibleChants.find(
+                                    (item) => item.team === 'blue' && item.cellId === cellId,
+                                )
+
+                                return (
+                                    <div key={`blue-${cellId}`} className={style.cell}>
+                                        {chant ? <p
+                                            className={style.randomItem}
+                                            style={{ ['--rotation' as string]: `${chant.rotation}deg` }}
+                                            onAnimationEnd={() => handleAnimationEnd(chant, cellId)}
+                                        >{chant.text}</p> : null}
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
                 </div>
                 b
             </div>
@@ -153,3 +163,7 @@ export default function RandomRenderOverlay() {
         </div>
     )
 }
+
+// function CustomisedButton ({children} : {children: React.ReactNode}) {
+//     return (<Button>{children}</Button>)
+// }
