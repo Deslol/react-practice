@@ -128,7 +128,7 @@ export default function RandomRenderOverlay() {
                                 return (
                                     <div key={`red-${cellId}`} className={style.cell}>
                                         {chant ? <p
-                                            className={style.randomItem}
+                                            className={style.chantCell}
                                             style={{ ['--rotation' as string]: `${chant.rotation}deg` }}
                                             onAnimationEnd={() => handleAnimationEnd(chant, cellId)}
                                         >{chant.text}</p> : null}
@@ -147,7 +147,7 @@ export default function RandomRenderOverlay() {
                                 return (
                                     <div key={`blue-${cellId}`} className={style.cell}>
                                         {chant ? <p
-                                            className={style.randomItem}
+                                            className={style.chantCell}
                                             style={{ ['--rotation' as string]: `${chant.rotation}deg` }}
                                             onAnimationEnd={() => handleAnimationEnd(chant, cellId)}
                                         >{chant.text}</p> : null}

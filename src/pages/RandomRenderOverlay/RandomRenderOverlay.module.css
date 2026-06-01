@@ -35,7 +35,7 @@
     color: inherit;
 }
 
-.randomItem {
+.chantCell {
     --rotation: 0deg;
 
     position: absolute;
