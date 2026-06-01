@@ -1,0 +1,123 @@
+$grid-size: 3;
+$cell-gap: 0.75rem;
+
+%full-size {
+  width: 100%;
+  height: 100%;
+}
+
+%centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.overlayContainer {
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 255, 20%);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.gameContainer {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 1fr 2fr 1fr;
+  background-color: rgba(255, 0, 0, 0.5);
+  height: 100vh;
+  width: 100%;
+}
+
+.overlayLayer {
+  position: absolute;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  inset: 0;
+}
+
+.testLayer {
+  position: relative;
+}
+
+.cell {
+  @extend %centered;
+  position: relative;
+  min-height: 48px;
+  color: inherit;
+}
+
+.chantCell {
+  @extend %centered;
+
+  --rotation: 0deg;
+
+  position: absolute;
+  max-height: 100%;
+  max-width: 100%;
+
+  font-family: 'ADLaM Display';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 26px;
+  text-align: center;
+
+  background: linear-gradient(0deg, #FFB765 12.5%, #FFE3AC 39.19%, #FFE3AC 51.94%, #FFFFFF 90.62%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  mix-blend-mode: plus-lighter;
+  will-change: opacity, transform;
+  animation: fadeInOut 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.chantContainer {
+  display: grid;
+  grid-template-columns: repeat($grid-size, 1fr);
+  grid-template-rows: repeat($grid-size, 1fr);
+  gap: $cell-gap;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.board {
+
+}
+
+.boardBlue {
+
+}
+
+.boardRed {
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--rotation)) translateY(8px) scale(0.98);
+    filter: blur(1px);
+  }
+
+  15% {
+    opacity: 1;
+    transform: rotate(var(--rotation)) translateY(0) scale(1);
+    filter: blur(0);
+  }
+
+  75% {
+    opacity: 1;
+    transform: rotate(var(--rotation)) translateY(0) scale(1);
+    filter: blur(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: rotate(var(--rotation)) translateY(-6px) scale(1.01);
+    filter: blur(1.5px);
+  }
+}
