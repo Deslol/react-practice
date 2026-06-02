@@ -32,6 +32,7 @@ $cell-gap: 0.75rem;
 }
 
 .overlayLayer {
+  pointer-events: none;
   position: absolute;
   display: grid;
   grid-template-columns: 1fr 1fr;

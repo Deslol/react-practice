@@ -174,7 +174,11 @@ export default function RandomRenderOverlay() {
                                         {chant ? (
                                             <span
                                                 className={style.chantCell}
-                                                style={{['--rotation' as string]: `${chant.rotation}deg`}}
+                                                style={
+                                                {
+                                                    ['--rotation' as string]: `${chant.rotation}deg`,
+                                                    // 'margin': `${rng() * 50}px ${rng() * 50}px ${rng() * 50}px ${rng() * 50}px`,
+                                                }}
                                                 onAnimationEnd={() => handleAnimationEnd(chant)}
                                             >
                                                 {chant.text}
@@ -212,7 +216,9 @@ export default function RandomRenderOverlay() {
                 </div>
                 b
             </div>
-            <div>c</div>
+            <div>
+                c
+            </div>
         </div>
     );
 }
