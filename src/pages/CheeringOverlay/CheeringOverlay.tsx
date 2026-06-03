@@ -1,4 +1,4 @@
-import style from './RandomRenderOverlay.module.scss'
+import style from './CheeringOverlay.module.scss'
 import {useCallback, useEffect, useRef, useState} from "react";
 
 type Team = "red" | "blue";
@@ -49,7 +49,7 @@ function pickRandomWord(words: string[]): string {
     return words[index];
 }
 
-export default function RandomRenderOverlay() {
+export default function CheeringOverlay() {
     const MAX_VISIBLE_PER_TEAM = 3;
     const RETRY_FLUSH_MS = 150;
 
@@ -125,10 +125,6 @@ export default function RandomRenderOverlay() {
         showQueuedChant(nextQueuedItem, cellId);
     }, [getRandomFreeCell, getVisibleCount, showQueuedChant, MAX_VISIBLE_PER_TEAM, RETRY_FLUSH_MS]);
 
-    useEffect(() => {
-        tryFlushQueueRef.current = tryFlushQueue;
-    }, [tryFlushQueue]);
-
     const handleIncomingChant = useCallback((payload: ChantPayload) => {
         queueRef.current.push(payload);
         tryFlushQueueRef.current();
@@ -156,6 +152,10 @@ export default function RandomRenderOverlay() {
             }
         };
     }, [handleIncomingChant]);
+
+    useEffect(() => {
+        tryFlushQueueRef.current = tryFlushQueue;
+    }, [tryFlushQueue]);
 
     return (
         <div className={style.gameContainer}>

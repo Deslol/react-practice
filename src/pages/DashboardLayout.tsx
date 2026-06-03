@@ -2,37 +2,26 @@ import { Link, Outlet } from "react-router";
 
 export default function DashboardLayout() {
     return (
-        <div>
+        <div className="min-h-svh flex flex-col">
             <header>
                 <h1>Practice Dashboard</h1>
 
                 <nav className="flex items-center justify-center">
                     <ul className="flex gap-2">
-                        <li>
-                            <Link to="/">Home</Link>
-                        </li>
-                        <li>
-                            <Link to="/tasks/todo">TODO</Link>
-                        </li>
-                        <li>
-                            <Link to="tasks/counter">Counter</Link>
-                        </li>
-                        <li>
-                            <Link to="tasks/notesPanel">Notes Panel</Link>
-                        </li>
-                        <li>
-                            <Link to="tasks/notifications">Notes Panel</Link>
-                        </li>
-                        <li>
-                            <Link to="tasks/randomRenderOverlay">Random Render Overlay</Link>
-                        </li>
+                        <li><Link to="/">Home</Link></li>
+                        <li><Link to="/tasks/todo">TODO</Link></li>
+                        <li><Link to="tasks/counter">Counter</Link></li>
+                        <li><Link to="tasks/notesPanel">Notes Panel</Link></li>
+                        <li><Link to="tasks/notifications">Notes Panel</Link></li>
+                        <li><Link to="tasks/cheeringOverlay">Cheering Overlay</Link></li>
+                        <li><Link to='tasks/textAnimation'>Text Animation</Link></li>
                     </ul>
                 </nav>
             </header>
 
-            <main>
-                <Outlet/>
+            <main className="flex-1 min-h-0 flex">
+                <Outlet />
             </main>
         </div>
-    )
+    );
 }

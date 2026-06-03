@@ -5,7 +5,8 @@ import TodoPage from "./pages/TodoPage.tsx";
 import CounterPage from "./pages/CounterPage.tsx";
 import NotePanelPage from "./pages/NotePanelPage.tsx";
 import NotificationsPage from "./pages/NotificationsPage.tsx";
-import RandomRenderOverlay from "./pages/RandomRenderOverlay/RandomRenderOverlay.tsx";
+import CheeringOverlay from "./pages/CheeringOverlay/CheeringOverlay.tsx";
+import TextAnimationPage from "./pages/TextAnimation/TextAnimationPage.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -36,8 +37,12 @@ export const router = createBrowserRouter([
                         Component: NotificationsPage
                     },
                     {
-                        path: 'randomRenderOverlay',
-                        Component: RandomRenderOverlay
+                        path: 'cheeringOverlay',
+                        Component: CheeringOverlay
+                    },
+                    {
+                        path: "textAnimation",
+                        Component: TextAnimationPage
                     }
                 ]
             }

@@ -27,7 +27,7 @@ $cell-gap: 0.75rem;
   grid-template-columns: auto;
   grid-template-rows: 1fr 2fr 1fr;
   background-color: rgba(255, 0, 0, 0.5);
-  height: 100vh;
+  min-height: 100%;
   width: 100%;
 }
 
