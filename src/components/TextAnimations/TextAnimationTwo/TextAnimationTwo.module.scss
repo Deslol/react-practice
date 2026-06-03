@@ -133,10 +133,10 @@
       0 0 24px rgba(255, 227, 172, 0.8),
       0 0 40px rgba(196, 168, 113, 0.7);
 
-      animation: MagNShrinkNMove 530ms forwards , fade 1333ms forwards ;
+      animation: MagNShrink 530ms forwards , fade 1333ms forwards ;
       //  animation: fade 1333ms forwards;
 
-      @keyframes MagNShrinkNMove {
+      @keyframes MagNShrink {
         0% {
           transform: scale(2.5);
         }
