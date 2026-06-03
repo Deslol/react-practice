@@ -13,6 +13,10 @@
   align-items: center;
 
   .animatedTextWrapper {
+    --wrapper-rotation-deg: 30deg;
+
+    transform: rotate(var(--wrapper-rotation-deg));
+
     //margin: auto;
     .textContainer {
       @extend %text-base;
@@ -62,7 +66,10 @@
     .overlayText {
       @extend %text-base;
       position: absolute;
-      inset: 0;
+      top: -4px;
+      left:0;
+      right:0;
+      bottom:0;
       z-index: 1;
 
       color: transparent;
@@ -129,8 +136,69 @@
     }
 
     .explosiveLines {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
 
+      --line-width: 14px;
+      --line-height: 100px;
+      --launch-distance: 60px;
+      --start-scale-x: 0.5;
+      --end-scale-x: 1;
+      --start-scale-y: 0.25;
+      --end-scale-y: 0.5;
+      --line-half-width: calc(var(--line-width) / 2);
+
+      .lineWrapper {
+        --angle: 0deg;
+
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 0;
+        height: 0;
+        transform: rotate(var(--angle));
+
+        .line {
+          position: absolute;
+          left: 0;
+          top:0;
+          width: var(--line-width);
+          height: var(--line-height);
+
+          background: linear-gradient(
+                  to top,
+                  #C4A871,
+                  #FFE3AC 40%,
+                  rgba(255, 255, 255, 0.9)
+          );
+          clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+
+          transform-origin:50% 0;
+
+          animation: launchNFadeNZoom 600ms forwards infinite;
+
+          @keyframes launchNFadeNZoom {
+            0% {
+              transform:
+              translateX(calc(var(--line-half-width) * -1))
+              translateY(0)
+              scaleX(var(--start-scale-x))
+              scaleY(var(--start-scale-y));
+              opacity: 1;
+            }
+
+            100% {
+              transform:
+              translateX(calc(var(--line-half-width) * -1))
+              translateY(calc(var(--launch-distance) * 1))
+              scaleX(var(--end-scale-x))
+              scaleY(var(--end-scale-y));
+              opacity: 0;
+            }
+          }
+        }
+      }
     }
   }
-
 }

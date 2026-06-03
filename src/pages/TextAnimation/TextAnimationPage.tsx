@@ -6,7 +6,7 @@ export default function TextAnimationPage() {
     return (
         <div className={`${style.textAnimationContainer} flex justify-center align-middle flex-col gap-3`}>
             <TextAnimation text='THREE'/>
-            <TextAnimation text='TWO'/>
+            {/*<TextAnimation text='TWO'/>*/}
         </div>
     )
 }
