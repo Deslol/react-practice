@@ -21,16 +21,14 @@ export default function TextAnimationTwo({text}: { text: string }) {
                         <span className={style.overlayText}>
                             {textMoreThanOne(text)}
                         </span>
+                         <span className={style.blurEffect}>{textMoreThanOne(text)}</span>
+                        {/*<div className={style.explosiveLines}>*/}
+                        {/*    <div className={style.lineWrapper}>*/}
+                        {/*        <span className={style.line}/>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
                     </span>
-
-                    {/*<span className={style.blurEffect}>{text}</span>*/}
                 </div>
-
-                {/*<div className={style.explosiveLines}>*/}
-                {/*    <div className={style.lineWrapper}>*/}
-                {/*        <span className={style.line}/>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
             </div>
         </div>
     )
