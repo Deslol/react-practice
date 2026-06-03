@@ -6,7 +6,7 @@ import TextAnimationThree from "../../components/TextAnimations/TextAnimationThr
 export default function TextAnimationPage() {
 
     return (
-        <div className={`${style.textAnimationContainer} flex justify-center align-middle flex-col gap-3`}>
+        <div className={`${style.textAnimationContainer} flex justify-center align-middle flex-col gap-10`}>
             <TextAnimation text='Animation ONE'/>
 
             <TextAnimationTwo text="Animation TWO" />

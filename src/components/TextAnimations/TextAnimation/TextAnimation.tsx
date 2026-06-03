@@ -1,4 +1,5 @@
 import style from './TextAnimation.module.scss'
+import type {CSSProperties} from "react";
 
 function rng() {
     return Math.random() * 60 - 30
@@ -43,19 +44,19 @@ export default function TextAnimation({text}: { text: string }) {
                         </div>
                         <div
                             className={style.lineWrapper}
-                            style={{'--angle': '90deg', '--line-height': '125px'} as React.CSSProperties}
+                            style={{'--angle': '90deg', '--line-height': '125px'} as CSSProperties}
                         >
                             <span className={style.line}/>
                         </div>
                         <div
                             className={style.lineWrapper}
-                            style={{'--angle': '245deg', '--line-height': '62.5px'} as React.CSSProperties}
+                            style={{'--angle': '245deg', '--line-height': '62.5px'} as CSSProperties}
                         >
                             <span className={style.line}/>
                         </div>
                         <div
                             className={style.lineWrapper}
-                            style={{'--angle': '290deg', '--line-height': '187.5px'} as React.CSSProperties}
+                            style={{'--angle': '290deg', '--line-height': '187.5px'} as CSSProperties}
                         >
                             <span className={style.line}/>
                         </div>

@@ -1,0 +1,209 @@
+%text-base {
+  font-family: 'ADLaM Display';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  text-align: center;
+}
+
+.textAnimationContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .animatedTextWrapper {
+    --wrapper-rotation-deg: 0deg;
+    transform: rotate(var(--wrapper-rotation-deg));
+
+    .textContainer {
+      @extend %text-base;
+      position: relative;
+      display: inline-block;
+    }
+
+    .mainText {
+      @extend %text-base;
+      display: inline-block;
+      position: relative;
+      z-index: 2;
+      transform-origin: center bottom;
+
+      background: linear-gradient(0deg, #C4A871 12.5%, #FFE3AC 39.19%, #FFE3AC 51.94%, #FFFFFF 90.62%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+
+      animation: bounceNFade 1333ms infinite;
+
+      @keyframes bounceNFade {
+        0% {
+          transform: translateY(-180px);
+          opacity: 0;
+        }
+
+        2.5% {
+          transform: scaleY(1);
+        }
+
+        4.95% {
+          opacity: 1;
+        }
+
+        10% {
+          transform: translateY(80px);
+        }
+
+        38.5% {
+          transform: scaleY(0.3) translateY(0);
+          filter: brightness(2.5);
+        }
+
+        50% {
+          transform: scaleY(1);
+          filter: brightness(1);
+        }
+
+        90% {
+          transform: scale(1);
+        }
+
+        100% {
+          transform: scale(0.8);
+          opacity: 0;
+        }
+      }
+    }
+
+    .overlayText {
+      @extend %text-base;
+      position: absolute;
+      top: -4px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1;
+
+      color: transparent;
+      text-shadow: 1.56px 3.12px 0 #C4A871, 0 4px 30px rgba(36, 33, 29, 0.5);
+
+      pointer-events: none;
+      user-select: none;
+
+      animation: amplifyAndFade 666ms forwards infinite;
+
+      @keyframes amplifyAndFade {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+
+        100% {
+          transform: scale(1.5);
+          opacity: 0;
+        }
+      }
+    }
+
+
+    .blurEffect {
+      position: absolute;
+      inset: 0;
+      color: transparent;
+      filter: blur(8px);
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.9),
+      0 0 24px rgba(255, 227, 172, 0.8),
+      0 0 40px rgba(196, 168, 113, 0.7);
+
+      animation: MagNShrink 466ms forwards infinite, fade 1233ms forwards infinite;
+
+      @keyframes MagNShrink {
+        0% {
+          transform: scale(1.3);
+        }
+
+        100% {
+          transform: scale(1.1);
+        }
+      }
+
+      @keyframes fade {
+        0% {
+          opacity: 1;
+
+        }
+
+        37.8% {
+          opacity: 0.2;
+        }
+
+        89.2% {
+          opacity: 0.2;
+        }
+
+        100% {
+          opacity: 0;
+        }
+      }
+    }
+
+    .explosiveLines {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+
+      --line-width: 14px;
+      --line-height: 100px;
+      --launch-distance: 60px;
+      --start-scale-x: 0.5;
+      --end-scale-x: 1;
+      --start-scale-y: 0.25;
+      --end-scale-y: 0.5;
+      --line-half-width: calc(var(--line-width) / 2);
+
+      .lineWrapper {
+        --angle: 0deg;
+
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 0;
+        height: 0;
+        transform: rotate(var(--angle));
+
+        .line {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: var(--line-width);
+          height: var(--line-height);
+
+          background: linear-gradient(
+                  to top,
+                  #C4A871,
+                  #FFE3AC 40%,
+                  rgba(255, 255, 255, 0.9)
+          );
+          clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+
+          transform-origin: 50% 0;
+
+          animation: launchNFadeNZoom 600ms forwards infinite;
+
+          @keyframes launchNFadeNZoom {
+            0% {
+              transform: translateX(calc(var(--line-half-width) * -1)) translateY(0) scaleX(var(--start-scale-x)) scaleY(var(--start-scale-y));
+              opacity: 1;
+            }
+
+            100% {
+              transform: translateX(calc(var(--line-half-width) * -1)) translateY(calc(var(--launch-distance) * 1)) scaleX(var(--end-scale-x)) scaleY(var(--end-scale-y));
+              opacity: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
