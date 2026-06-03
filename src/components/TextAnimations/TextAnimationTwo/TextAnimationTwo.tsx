@@ -1,19 +1,26 @@
 import style from './TextAnimationTwo.module.scss'
 
 export default function TextAnimationTwo({text}: { text: string }) {
+
+    function textMoreThanOne(text: string) {
+        return text.includes(" ") ? (
+            <>
+                {text.split(" ")[0]}
+                <br/>
+                {text.split(" ")[1]}
+            </>
+        ) : (text)
+    }
+
     return (
         <div className={style.textAnimationContainer}>
             <div className={style.animatedTextWrapper}>
                 <div className={style.textContainer}>
                     <span className={style.mainText}>
-                    {text.includes(" ") ? (
-                        <>
-                            {text.split(" ")[0]}
-                            <br/>
-                            {text.split(" ")[1]}
-                        </>
-                    ) : (text)}
-                        <span className={style.overlayText}>{text}</span>
+                            {textMoreThanOne(text)}
+                        <span className={style.overlayText}>
+                            {textMoreThanOne(text)}
+                        </span>
                     </span>
 
                     {/*<span className={style.blurEffect}>{text}</span>*/}

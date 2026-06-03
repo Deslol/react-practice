@@ -5,6 +5,16 @@ function rng() {
     return Math.random() * 60 - 30
 }
 
+function textMoreThanOne(text: string) {
+    return text.includes(" ") ? (
+        <>
+            {text.split(" ")[0]}
+            <br/>
+            {text.split(" ")[1]}
+        </>
+    ) : (text)
+}
+
 export default function TextAnimation({text}: { text: string }) {
     return (
         <div className={`${style.textAnimationContainer} flex justify-center align-middle`}>
@@ -12,28 +22,13 @@ export default function TextAnimation({text}: { text: string }) {
                  style={({'--wrapper-rotation-deg': `${rng()}deg`} as React.CSSProperties)}>
                 <div className={style.textContainer}>
                     <span className={style.mainText}>
-                        {text.includes(" ") ? (
-                            <>
-                                {text.split(" ")[0]}
-                                <br/>
-                                {text.split(" ")[1]}
-                            </>
-                        ) : (text)}
+                        {textMoreThanOne(text)}
                     </span>
                     <span className={style.overlayText}>
-                         {text.includes(" ") ? (
-                             <>{text.split(" ")[0]}
-                                <br/>
-                                  {text.split(" ")[1]}
-                             </>) : (text)}
+                         {textMoreThanOne(text)}
                     </span>
                     <span className={style.blurEffect}>
-                        {text.includes(" ") ? (
-                        <>{text.split(" ")[0]}
-                            <br/>
-                             {text.split(" ")[1]}
-                        </>
-                        ) : (text)}
+                        {textMoreThanOne(text)}
                     </span>
                     <div className={style.explosiveLines}>
                         <div
