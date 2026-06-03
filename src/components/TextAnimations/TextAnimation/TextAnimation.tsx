@@ -1,19 +1,39 @@
 import style from './TextAnimation.module.scss'
 
 function rng() {
-    const x = Math.random() * 60 - 30
-    console.log(x)
-    return x
+    return Math.random() * 60 - 30
 }
 
 export default function TextAnimation({text}: { text: string }) {
     return (
         <div className={`${style.textAnimationContainer} flex justify-center align-middle`}>
-            <div className={style.animatedTextWrapper} style={({ '--wrapper-rotation-deg': `${rng()}deg` } as React.CSSProperties)} >
+            <div className={style.animatedTextWrapper}
+                 style={({'--wrapper-rotation-deg': `${rng()}deg`} as React.CSSProperties)}>
                 <div className={style.textContainer}>
-                    <span className={style.mainText}>{text}</span>
-                    <span className={style.overlayText}>{text}</span>
-                    <span className={style.blurEffect}>{text}</span>
+                    <span className={style.mainText}>
+                        {text.includes(" ") ? (
+                            <>
+                                {text.split(" ")[0]}
+                                <br/>
+                                {text.split(" ")[1]}
+                            </>
+                        ) : (text)}
+                    </span>
+                    <span className={style.overlayText}>
+                         {text.includes(" ") ? (
+                             <>{text.split(" ")[0]}
+                                <br/>
+                                  {text.split(" ")[1]}
+                             </>) : (text)}
+                    </span>
+                    <span className={style.blurEffect}>
+                        {text.includes(" ") ? (
+                        <>{text.split(" ")[0]}
+                            <br/>
+                             {text.split(" ")[1]}
+                        </>
+                        ) : (text)}
+                    </span>
                     <div className={style.explosiveLines}>
                         <div
                             className={style.lineWrapper}
