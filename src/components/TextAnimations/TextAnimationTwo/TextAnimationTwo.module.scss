@@ -35,7 +35,7 @@
       -webkit-text-fill-color: transparent;
       color: transparent;
 
-      animation: bounceNFade 1333ms infinite;
+      animation: bounceNFade 1333ms forwards;
 
       @keyframes bounceNFade {
         0% {
@@ -52,7 +52,7 @@
         }
 
         10% {
-          transform: translateY(80px);
+          transform: translateY(-80px);
         }
 
         38.5% {
@@ -65,8 +65,13 @@
           filter: brightness(1);
         }
 
-        90% {
+        75% {
           transform: scale(1);
+          opacity: 1;
+        }
+
+        80%{
+          opacity: 0.3;
         }
 
         100% {

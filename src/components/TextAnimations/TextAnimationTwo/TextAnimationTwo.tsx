@@ -5,8 +5,17 @@ export default function TextAnimationTwo({text}: { text: string }) {
         <div className={style.textAnimationContainer}>
             <div className={style.animatedTextWrapper}>
                 <div className={style.textContainer}>
-                    <span className={style.mainText}>{text}</span>
-                    {/*<span className={style.overlayText}>{text}</span>*/}
+                    <span className={style.mainText}>
+                    {text.includes(" ") ? (
+                        <>
+                            {text.split(" ")[0]}
+                            <br/>
+                            {text.split(" ")[1]}
+                        </>
+                    ) : (text)}
+                        <span className={style.overlayText}>{text}</span>
+                    </span>
+
                     {/*<span className={style.blurEffect}>{text}</span>*/}
                 </div>
 
