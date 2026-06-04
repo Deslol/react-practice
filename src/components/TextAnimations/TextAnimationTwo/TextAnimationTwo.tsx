@@ -1,4 +1,5 @@
 import style from './TextAnimationTwo.module.scss'
+import {ExplosiveLines} from "./ExplosiveLines/ExplosiveLines.tsx";
 
 export default function TextAnimationTwo({text}: { text: string }) {
 
@@ -22,12 +23,9 @@ export default function TextAnimationTwo({text}: { text: string }) {
                             {textMoreThanOne(text)}
                         </span>
                          <span className={style.blurEffect}>{textMoreThanOne(text)}</span>
-                        {/*<div className={style.explosiveLines}>*/}
-                        {/*    <div className={style.lineWrapper}>*/}
-                        {/*        <span className={style.line}/>*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
                     </span>
+
+                    <ExplosiveLines />
                 </div>
             </div>
         </div>
