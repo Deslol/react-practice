@@ -5,6 +5,17 @@
   font-size: 24px;
   text-align: center;
   pointer-events: none;
+
+  // colour
+  background: linear-gradient(
+          180deg,
+          #ffffff 0%,
+          #acd5ff 15%,
+          #58a5ed 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .textAnimationContainer {
@@ -27,23 +38,16 @@
         transform-origin: center bottom;
 
         /* Blow it */
-        font-family: 'ADLaM Display';
-        font-style: normal;
-        text-align: center;
 
-        background: linear-gradient(0deg, #58A5ED 12.5%, #ACD5FF 39.19%, #ACD5FF 51.94%, #FFFFFF 90.62%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
 
         //text-shadow: 1.56px 3.12px 0px #2E31BC, 0px 4px 30px rgba(36, 33, 29, 0.5);
 
         .overlayText {
-
+          @extend %text-base;
         }
 
         .blurEffect {
-
+         @extend %text-base;
         }
       }
 
