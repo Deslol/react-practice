@@ -30,7 +30,9 @@ export default function TextAnimationTwo({text}: { text: string }) {
                         <span className={style.overlayText}>
                             {textMoreThanOne(text)}
                         </span>
-                         <span className={style.blurEffect}>{textMoreThanOne(text)}</span>
+                         <span className={style.blurEffect}>
+                             {textMoreThanOne(text)}
+                         </span>
                     </span>
 
                     <ExplosiveLines />
