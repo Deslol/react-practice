@@ -14,11 +14,11 @@ type ExplosiveLinesProps = {
 };
 
 const DEFAULT_LINES = [
-    {angle: '45deg', left: '-50px', lineHeight: '50px'},
-    {angle: '25deg', left: '-20px', lineHeight: '90px'},
+    {angle: '35deg', left: '-50px', lineHeight: '40px'},
+    {angle: '25deg', left: '-20px', lineHeight: '80px'},
     {angle: '0deg', left: undefined, lineHeight: '80px'},
-    {angle: '-45deg', left: '20px', lineHeight: '120px'},
-    {angle: '-55deg', left: '50px', lineHeight: '50px'},
+    {angle: '-35deg', left: '20px', lineHeight: '80px'},
+    {angle: '-45deg', left: '50px', lineHeight: '40px'},
 ] as const;
 
 

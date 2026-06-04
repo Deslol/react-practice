@@ -1,6 +1,8 @@
 import style from './TextAnimation.module.scss'
 import type {CSSProperties} from "react";
 
+
+// Should be replaced with props.rotationDegree
 function rng() {
     return Math.random() * 60 - 30
 }
@@ -15,7 +17,12 @@ function textMoreThanOne(text: string) {
     ) : (text)
 }
 
-export default function TextAnimation({text}: { text: string }) {
+export default function TextAnimation({
+                                          // rotationDegree,
+                                          text,
+                                      }: {
+    text: string, // rotationDegree?: number
+}) {
     return (
         <div className={`${style.textAnimationContainer} flex justify-center align-middle`}>
             <div className={style.animatedTextWrapper}

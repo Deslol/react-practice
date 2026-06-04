@@ -36,7 +36,7 @@
       -webkit-text-fill-color: transparent;
       color: transparent;
 
-      animation: shrinkAndFade 1233ms forwards infinite;
+      animation: shrinkAndFade 1233ms forwards;
 
       @keyframes shrinkAndFade {
         0% {
@@ -79,7 +79,7 @@
       pointer-events: none;
       user-select: none;
 
-      animation: amplifyAndFade 666ms forwards infinite;
+      animation: amplifyAndFade 666ms forwards;
 
       @keyframes amplifyAndFade {
         0% {
@@ -104,7 +104,7 @@
       0 0 24px rgba(255, 227, 172, 0.8),
       0 0 40px rgba(196, 168, 113, 0.7);
 
-      animation: MagNShrink 466ms forwards infinite, fade 1233ms forwards infinite;
+      animation: MagNShrink 466ms forwards, fade 1233ms forwards;
 
       @keyframes MagNShrink {
         0% {
@@ -177,7 +177,7 @@
 
           transform-origin:50% 0;
 
-          animation: launchNFadeNZoom 600ms forwards infinite;
+          animation: launchNFadeNZoom 600ms forwards;
 
           @keyframes launchNFadeNZoom {
             0% {
