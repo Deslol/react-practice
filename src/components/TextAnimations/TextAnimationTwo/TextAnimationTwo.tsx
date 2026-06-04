@@ -1,5 +1,10 @@
 import style from './TextAnimationTwo.module.scss'
 import {ExplosiveLines} from "./ExplosiveLines/ExplosiveLines.tsx";
+import type {CSSProperties} from "react";
+
+function rng() {
+    return Math.random() * 60 - 30
+}
 
 export default function TextAnimationTwo({text}: { text: string }) {
 
@@ -15,7 +20,10 @@ export default function TextAnimationTwo({text}: { text: string }) {
 
     return (
         <div className={style.textAnimationContainer}>
-            <div className={style.animatedTextWrapper}>
+            <div
+                className={style.animatedTextWrapper}
+                style={({'--wrapper-rotation-deg': `${rng()}deg`} as CSSProperties)}
+            >
                 <div className={style.textContainer}>
                     <span className={style.mainText}>
                             {textMoreThanOne(text)}

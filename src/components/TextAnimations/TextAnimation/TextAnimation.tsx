@@ -19,7 +19,7 @@ export default function TextAnimation({text}: { text: string }) {
     return (
         <div className={`${style.textAnimationContainer} flex justify-center align-middle`}>
             <div className={style.animatedTextWrapper}
-                 style={({'--wrapper-rotation-deg': `${rng()}deg`} as React.CSSProperties)}>
+                 style={({'--wrapper-rotation-deg': `${rng()}deg`} as CSSProperties)}>
                 <div className={style.textContainer}>
                     <span className={style.mainText}>
                         {textMoreThanOne(text)}
@@ -33,7 +33,7 @@ export default function TextAnimation({text}: { text: string }) {
                     <div className={style.explosiveLines}>
                         <div
                             className={style.lineWrapper}
-                            style={{'--angle': '45deg', '--line-height': '45px'} as React.CSSProperties}
+                            style={{'--angle': '45deg', '--line-height': '45px'} as CSSProperties}
                         >
                             <span className={style.line}/>
                         </div>
