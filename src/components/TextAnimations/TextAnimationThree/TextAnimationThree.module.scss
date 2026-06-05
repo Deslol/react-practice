@@ -53,7 +53,7 @@
         pointer-events: none;
         user-select: none;
 
-        animation: overlayTextAnim 1330ms forwards infinite;
+        animation: overlayTextAnim 1325ms forwards infinite;
       }
 
       .blurEffect {
@@ -66,6 +66,8 @@
         text-shadow: 0 0 10px rgba(255, 255, 255, 0.9),
         0 0 24px rgba(172, 213, 255, 0.8),
         0 0 40px rgba(88, 165, 237, 0.7);
+
+        animation: blurEffectAnim 660ms forwards;
       }
 
       .windLineContainer {
@@ -90,11 +92,9 @@
           transform: translateX(-7px) rotate(0deg);
           filter: brightness(2);
         }
-
         35% {
           filter: brightness(1.5);
         }
-
         90% {
           opacity: 1;
           transform: translate(2px, 0) rotate(0deg);
@@ -122,11 +122,9 @@
         35% {
           opacity: 0.1;
         }
-
-        70%{
+        70% {
           transform: translateX(0px) rotate(0deg);
         }
-
         90% {
           opacity: 0.3;
           //transform: translateX(-7px) rotate(0deg);
@@ -135,6 +133,34 @@
         100% {
           opacity: 0;
           transform: translate(68px, 17px) rotate(-14deg);
+        }
+      }
+
+      @keyframes blurEffectAnim {
+        0% {
+          transform: translateX(-90px) rotate(1deg);
+        }
+
+        20.152% {
+          transform: scale(1);
+          opacity: 0;
+        }
+
+        40.3% {
+          opacity: 1;
+        }
+
+        45.45% {
+          transform: translateX(-7px) rotate(0deg);
+        }
+
+        90.9% {
+          opacity: 0;
+        }
+
+        100% {
+          transform: scale(1.2);
+          opacity: 0;
         }
       }
     }
