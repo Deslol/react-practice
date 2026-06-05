@@ -43,7 +43,7 @@ export default function TextAnimationThree({text, onAnimationEnd}: thirdTxtAnima
                          </span>
                     </span>
 
-                    {/*<ExplosiveLines />*/}
+                    {/* Wind Lines*/}
                     <div className={style.windLineContainer}>
                         <div className={style.windLineWrapper}>
                             <div className={style.windLines}>
