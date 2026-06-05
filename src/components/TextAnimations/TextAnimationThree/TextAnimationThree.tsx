@@ -1,8 +1,16 @@
 import style from "./TextAnimationThree.module.scss";
+
 // import type {CSSProperties} from "react";
 
-export default function TextAnimationThree({text}: { text: string })  {
-        function textMoreThanOne(text: string) {
+interface thirdTxtAnimationProp {
+    text: string;
+    rotation?: number;
+    onAnimationEnd?: () => void;
+}
+
+export default function TextAnimationThree({text, onAnimationEnd}: thirdTxtAnimationProp
+) {
+    function textMoreThanOne(text: string) {
         return text.includes(" ") ? (
             <>
                 {text.split(" ")[0]}
@@ -21,7 +29,13 @@ export default function TextAnimationThree({text}: { text: string })  {
                 <div className={style.textContainer}>
                     <span className={style.mainText}>
                             {textMoreThanOne(text)}
-                        <span className={style.overlayText}>
+                        <span
+                            className={style.overlayText}
+                            onAnimationEnd={(e) => {
+                                if (e.target !== e.currentTarget) return;
+                                onAnimationEnd?.();
+                            }}
+                        >
                             {textMoreThanOne(text)}
                         </span>
                          <span className={style.blurEffect}>

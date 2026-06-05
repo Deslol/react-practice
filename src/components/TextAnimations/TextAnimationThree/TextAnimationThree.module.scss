@@ -35,7 +35,7 @@
         z-index: 2;
         transform-origin: center bottom;
 
-        animation: mainTextAnim 1300ms forwards infinite;
+        animation: mainTextAnim 1300ms forwards;
       }
 
       .overlayText {
@@ -53,7 +53,7 @@
         pointer-events: none;
         user-select: none;
 
-        animation: overlayTextAnim 1325ms forwards infinite;
+        animation: overlayTextAnim 1325ms forwards;
       }
 
       .blurEffect {
