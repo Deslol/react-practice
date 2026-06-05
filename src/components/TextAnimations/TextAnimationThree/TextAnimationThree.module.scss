@@ -35,33 +35,106 @@
         z-index: 2;
         transform-origin: center bottom;
 
-        .overlayText {
-          @extend %text-base;
-          position: absolute;
-          top: -4px;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          z-index: 1;
+        animation: mainTextAnim 1300ms forwards infinite;
 
-          color: transparent;
-          text-shadow: 1.56px 3.12px 0 #ACD5FF, 0 4px 30px rgba(36, 33, 29, 0.5);
+        //@keyframes moveRotateFadeInOut {
+        //  0% {
+        //    opacity: 0;
+        //    transform: translateX(-90px) rotate(1deg);
+        //  }
+        //
+        //  10.231% {
+        //    opacity: 1;
+        //  }
+        //
+        //  23.077% {
+        //    transform: translateX(-7px) rotate(0deg);
+        //  }
+        //
+        //  90% {
+        //    transform: translate(2px, 0px) rotate(0deg);
+        //  }
+        //
+        //  89.692% {
+        //    opacity: 1;
+        //  }
+        //
+        //  100% {
+        //    opacity: 0;
+        //    transform: translate(78px, 17px) rotate(-14deg);
+        //  }
+        //}
+      }
 
-          pointer-events: none;
-          user-select: none;
-        }
+      .overlayText {
+        @extend %text-base;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 333;
 
-        .blurEffect {
-          @extend %text-base;
-          position: absolute;
-          inset: 0;
-          color: transparent;
-          filter: blur(8px);
+        color: transparent;
+        text-shadow: 1px 1px 0 #ACD5FF, 0 4px 30px rgba(36, 33, 29, 0.5);
 
-          text-shadow: 0 0 10px rgba(255, 255, 255, 0.9),
-          0 0 24px rgba(172, 213, 255, 0.8),
-          0 0 40px rgba(88, 165, 237, 0.7);
-        }
+        pointer-events: none;
+        user-select: none;
+
+        animation: overlayTextAnim 1300ms forwards infinite;
+
+        //@keyframes moveNRotateNFadeOverlay {
+        //  0% {
+        //    opacity: 0;
+        //  }
+        //
+        //  7.143% {
+        //    opacity: 0;
+        //    transform: translateX(-90px) rotate(1deg);
+        //  }
+        //
+        //  21.429% {
+        //    opacity: 1;
+        //  }
+        //
+        //  28.571% {
+        //    transform: translateX(-7px) rotate(0deg);
+        //    filter: brightness(2);
+        //  }
+        //
+        //  38.071% {
+        //    opacity: 0;
+        //  }
+        //
+        //  78.571% {
+        //    opacity: 0;
+        //    transform: translate(2px, 0px) rotate(0deg);
+        //  }
+        //
+        //  83.286% {
+        //    opacity: 1;
+        //  }
+        //
+        //  90.429% {
+        //    opacity: 0;
+        //  }
+        //
+        //  100% {
+        //    transform: translate(78px, 17px) rotate(-14deg);
+        //  }
+        //}
+      }
+
+      .blurEffect {
+        @extend %text-base;
+        position: absolute;
+        inset: 0;
+        color: transparent;
+        filter: blur(8px);
+
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.9),
+        0 0 24px rgba(172, 213, 255, 0.8),
+        0 0 40px rgba(88, 165, 237, 0.7);
       }
 
       .windLineContainer {
@@ -69,6 +142,59 @@
           .windLines {
 
           }
+        }
+      }
+
+      @keyframes mainTextAnim {
+        0% {
+          opacity: 0;
+          transform: translateX(-90px) rotate(1deg);
+        }
+        10% {
+          opacity: 1;
+          transform: translateX(-90px) rotate(1deg);
+        }
+        23% {
+          opacity: 1;
+          transform: translateX(-7px) rotate(0deg);
+        }
+        90% {
+          opacity: 1;
+          transform: translate(2px, 0) rotate(0deg);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(78px, 17px) rotate(-14deg);
+        }
+      }
+
+      @keyframes overlayTextAnim {
+        0% {
+          opacity: 0;
+          transform: translateX(-90px) rotate(1deg);
+          filter: brightness(1);
+        }
+        10% {
+          opacity: 0;
+          transform: translateX(-90px) rotate(1deg);
+        }
+        23% {
+          opacity: 1;
+          transform: translateX(-7px) rotate(0deg);
+          filter: brightness(2);
+        }
+        35% {
+          opacity: 0.7;
+          transform: translateX(-7px) rotate(0deg);
+          filter: brightness(1.4);
+        }
+        90% {
+          opacity: 0;
+          transform: translate(2px, 0) rotate(0deg);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(78px, 17px) rotate(-14deg);
         }
       }
     }
