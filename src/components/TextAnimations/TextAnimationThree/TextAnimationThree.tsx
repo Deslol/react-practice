@@ -1,10 +1,7 @@
 import style from "./TextAnimationThree.module.scss";
 
-// import type {CSSProperties} from "react";
-
 interface thirdTxtAnimationProp {
     text: string;
-    rotation?: number;
     onAnimationEnd?: () => void;
 }
 
@@ -24,7 +21,6 @@ export default function TextAnimationThree({text, onAnimationEnd}: thirdTxtAnima
         <div className={style.textAnimationContainer}>
             <div
                 className={style.animatedTextWrapper}
-                // style={({'--wrapper-rotation-deg': `${rng()}deg`} as CSSProperties)}
             >
                 <div className={style.textContainer}>
                     <span className={style.mainText}>
