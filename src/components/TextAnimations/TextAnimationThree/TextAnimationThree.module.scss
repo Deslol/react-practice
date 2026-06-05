@@ -36,34 +36,6 @@
         transform-origin: center bottom;
 
         animation: mainTextAnim 1300ms forwards infinite;
-
-        //@keyframes moveRotateFadeInOut {
-        //  0% {
-        //    opacity: 0;
-        //    transform: translateX(-90px) rotate(1deg);
-        //  }
-        //
-        //  10.231% {
-        //    opacity: 1;
-        //  }
-        //
-        //  23.077% {
-        //    transform: translateX(-7px) rotate(0deg);
-        //  }
-        //
-        //  90% {
-        //    transform: translate(2px, 0px) rotate(0deg);
-        //  }
-        //
-        //  89.692% {
-        //    opacity: 1;
-        //  }
-        //
-        //  100% {
-        //    opacity: 0;
-        //    transform: translate(78px, 17px) rotate(-14deg);
-        //  }
-        //}
       }
 
       .overlayText {
@@ -76,53 +48,12 @@
         z-index: 333;
 
         color: transparent;
-        text-shadow: 1px 1px 0 #ACD5FF, 0 4px 30px rgba(36, 33, 29, 0.5);
+        text-shadow: 0.2px 0.2px 0 #ACD5FF, 0 4px 30px rgba(36, 33, 29, 0.5);
 
         pointer-events: none;
         user-select: none;
 
-        animation: overlayTextAnim 1300ms forwards infinite;
-
-        //@keyframes moveNRotateNFadeOverlay {
-        //  0% {
-        //    opacity: 0;
-        //  }
-        //
-        //  7.143% {
-        //    opacity: 0;
-        //    transform: translateX(-90px) rotate(1deg);
-        //  }
-        //
-        //  21.429% {
-        //    opacity: 1;
-        //  }
-        //
-        //  28.571% {
-        //    transform: translateX(-7px) rotate(0deg);
-        //    filter: brightness(2);
-        //  }
-        //
-        //  38.071% {
-        //    opacity: 0;
-        //  }
-        //
-        //  78.571% {
-        //    opacity: 0;
-        //    transform: translate(2px, 0px) rotate(0deg);
-        //  }
-        //
-        //  83.286% {
-        //    opacity: 1;
-        //  }
-        //
-        //  90.429% {
-        //    opacity: 0;
-        //  }
-        //
-        //  100% {
-        //    transform: translate(78px, 17px) rotate(-14deg);
-        //  }
-        //}
+        animation: overlayTextAnim 1330ms forwards infinite;
       }
 
       .blurEffect {
@@ -157,10 +88,17 @@
         23% {
           opacity: 1;
           transform: translateX(-7px) rotate(0deg);
+          filter: brightness(2);
         }
+
+        35% {
+          filter: brightness(1.5);
+        }
+
         90% {
           opacity: 1;
           transform: translate(2px, 0) rotate(0deg);
+          filter: brightness(1);
         }
         100% {
           opacity: 0;
@@ -171,30 +109,32 @@
       @keyframes overlayTextAnim {
         0% {
           opacity: 0;
-          transform: translateX(-90px) rotate(1deg);
+          //transform: translateX(-90px) rotate(1deg);
           filter: brightness(1);
         }
         10% {
           opacity: 0;
-          transform: translateX(-90px) rotate(1deg);
+          //transform: translateX(-90px) rotate(1deg);
         }
         23% {
-          opacity: 1;
-          transform: translateX(-7px) rotate(0deg);
-          filter: brightness(2);
+          opacity: 0.2;
         }
         35% {
-          opacity: 0.7;
-          transform: translateX(-7px) rotate(0deg);
-          filter: brightness(1.4);
+          opacity: 0.1;
         }
+
+        70%{
+          transform: translateX(0px) rotate(0deg);
+        }
+
         90% {
-          opacity: 0;
-          transform: translate(2px, 0) rotate(0deg);
+          opacity: 0.3;
+          //transform: translateX(-7px) rotate(0deg);
+          transform: translate(4px, 0) rotate(1deg);
         }
         100% {
           opacity: 0;
-          transform: translate(78px, 17px) rotate(-14deg);
+          transform: translate(68px, 17px) rotate(-14deg);
         }
       }
     }
