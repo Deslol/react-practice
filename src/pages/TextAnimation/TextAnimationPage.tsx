@@ -1,7 +1,7 @@
-import style from './TextAnimationPage.module.scss'
-import TextAnimation from "../../components/TextAnimations/TextAnimation/TextAnimation.tsx";
-import TextAnimationTwo from "../../components/TextAnimations/TextAnimationTwo/TextAnimationTwo.tsx";
-import TextAnimationThree from "../../components/TextAnimations/TextAnimationThree/TextAnimationThree.tsx";
+// import style from './TextAnimationPage.module.scss'
+// import TextAnimation from "../../components/TextAnimations/TextAnimation/TextAnimation.tsx";
+// import TextAnimationTwo from "../../components/TextAnimations/TextAnimationTwo/TextAnimationTwo.tsx";
+// import TextAnimationThree from "../../components/TextAnimations/TextAnimationThree/TextAnimationThree.tsx";
 import CheeringTest from "../../components/TextAnimations/CheeringTest.tsx";
 
 export default function TextAnimationPage() {

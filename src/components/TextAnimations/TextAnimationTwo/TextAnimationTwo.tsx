@@ -2,11 +2,15 @@ import style from './TextAnimationTwo.module.scss'
 import {ExplosiveLines} from "./ExplosiveLines/ExplosiveLines.tsx";
 import type {CSSProperties} from "react";
 
-function rng() {
-    return Math.random() * 60 - 30
-}
-
-export default function TextAnimationTwo({text}: { text: string }) {
+export default function TextAnimationTwo({
+    rotation = 0,
+    text,
+    onAnimationEnd}:
+    {
+    text: string;
+    rotation?: number;
+    onAnimationEnd?: () => void;
+}) {
 
     function textMoreThanOne(text: string) {
         return text.includes(" ") ? (
@@ -22,10 +26,16 @@ export default function TextAnimationTwo({text}: { text: string }) {
         <div className={style.textAnimationContainer}>
             <div
                 className={style.animatedTextWrapper}
-                style={({'--wrapper-rotation-deg': `${rng()}deg`} as CSSProperties)}
+                style={({'--wrapper-rotation-deg': `${rotation}deg`} as CSSProperties)}
             >
                 <div className={style.textContainer}>
-                    <span className={style.mainText}>
+                    <span
+                        className={style.mainText}
+                        onAnimationEnd={(e) => {
+                            if (e.target !== e.currentTarget) return;
+                            onAnimationEnd?.();
+                        }}
+                    >
                             {textMoreThanOne(text)}
                         <span className={style.overlayText}>
                             {textMoreThanOne(text)}
@@ -35,7 +45,7 @@ export default function TextAnimationTwo({text}: { text: string }) {
                          </span>
                     </span>
 
-                    <ExplosiveLines />
+                    <ExplosiveLines/>
                 </div>
             </div>
         </div>

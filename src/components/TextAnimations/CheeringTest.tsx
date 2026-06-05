@@ -2,6 +2,7 @@ import style from "./CheeringTest.module.scss";
 import { useCallback, useEffect, useRef, useState } from "react";
 // import { Text, Button } from "@aceron/ui";
 import TextAnimation from "./TextAnimation/TextAnimation.tsx";
+import TextAnimationTwo from "./TextAnimationTwo/TextAnimationTwo.tsx";
 
 type Team = "red" | "blue";
 type CellId = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
@@ -209,7 +210,7 @@ export default function CheeringTest() {
 								return (
 									<div key={`red-${cellId}`} className={style.cell}>
 										{chant ? (
-											<TextAnimation
+											<TextAnimationTwo
 												text={chant.text}
 												rotation={chant.rotation}
 												onAnimationEnd={() => handleAnimationEnd(chant)}
