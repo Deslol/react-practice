@@ -47,7 +47,26 @@ export default function TextAnimationThree({text, onAnimationEnd}: thirdTxtAnima
                     <div className={style.windLineContainer}>
                         <div className={style.windLineWrapper}>
                             <div className={style.windLines}>
-
+                                <div className={style.windLine}>
+                                    <span className={style.windSegment}></span>
+                                    <span className={style.windSegment}></span>
+                                    <span className={style.windSegment}></span>
+                                </div>
+                                <div className={style.windLine}>
+                                    <span className={style.windSegment}></span>
+                                    <span className={style.windSegment}></span>
+                                    <span className={style.windSegment}></span>
+                                </div>
+                                <div className={style.windLine}>
+                                    <span className={style.windSegment}></span>
+                                    <span className={style.windSegment}></span>
+                                    <span className={style.windSegment}></span>
+                                </div>
+                                <div className={style.windLine}>
+                                    <span className={style.windSegment}></span>
+                                    <span className={style.windSegment}></span>
+                                    <span className={style.windSegment}></span>
+                                </div>
                             </div>
                         </div>
                     </div>
