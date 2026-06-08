@@ -13,11 +13,12 @@ interface ChantPayload {
     id: number;
     text: string;
     team: Team;
+    type: CheerType;
 }
 
 interface VisibleChant extends ChantPayload {
     cellId: CellId;
-    rotation: number;
+    rotation?: number;
 }
 
 const CELL_IDS: CellId[] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
@@ -168,16 +169,40 @@ export default function CheeringTest() {
         tryFlushQueueRef.current();
     }, []);
 
-    const handleCheerBtnClick = (cheerText: CheerType, team: Team) => {
+    const handleCheerBtnClick = (cheerType: CheerType, team: Team) => {
         const newCheerPayload: ChantPayload = {
             // eslint-disable-next-line react-hooks/purity
             id: Date.now() + Math.random(),
-            text: cheerText,
+            type: cheerType,
+            text: cheerMap[cheerType],
             team,
         };
 
         handleIncomingChant(newCheerPayload);
     };
+
+    function randomRenderTextAnimation(chant: VisibleChant) {
+        const randomNum = rng();
+
+        if (chant.type === 'blow') return <TextAnimationThree
+            text={chant.text}
+            onAnimationEnd={() => handleAnimationEnd(chant)}
+        />
+
+        if (randomNum <= 0.5) {
+            return <TextAnimation
+                text={chant.text}
+                rotation={chant.rotation}
+                onAnimationEnd={() => handleAnimationEnd(chant)}
+            />
+        } else {
+            return <TextAnimationTwo
+                text={chant.text}
+                rotation={chant.rotation}
+                onAnimationEnd={() => handleAnimationEnd(chant)}
+            />
+        }
+    }
 
     // Mock socket behaviour
     // useEffect(() => {
@@ -211,13 +236,7 @@ export default function CheeringTest() {
 
                                 return (
                                     <div key={`red-${cellId}`} className={style.cell}>
-                                        {chant ? (
-                                            <TextAnimationTwo
-                                                text={chant.text}
-                                                rotation={chant.rotation}
-                                                onAnimationEnd={() => handleAnimationEnd(chant)}
-                                            />
-                                        ) : null}
+                                        {chant ? randomRenderTextAnimation(chant) : null}
                                     </div>
                                 );
                             })}
@@ -233,17 +252,7 @@ export default function CheeringTest() {
 
                                 return (
                                     <div key={`blue-${cellId}`} className={style.cell}>
-                                        {chant ? (
-                                            // <TextAnimation
-                                            // 	text={chant.text}
-                                            // 	rotation={chant.rotation}
-                                            // 	onAnimationEnd={() => handleAnimationEnd(chant)}
-                                            // />
-                                            <TextAnimationThree
-                                                text={chant.text}
-                                                onAnimationEnd={() => handleAnimationEnd(chant)}
-                                            />
-                                        ) : null}
+                                        {chant ? randomRenderTextAnimation(chant) : null}
                                     </div>
                                 );
                             })}
@@ -254,13 +263,13 @@ export default function CheeringTest() {
             </div>
             <div className={style.btnContainer}>
                 <div className={`${style.btnGroup} ${style.teamRed}`}>
-                    {Object.values(cheerMap).map((cheerText) => {
+                    {Object.entries(cheerMap).map(([cheerType, cheerText]) => {
                         return (
                             <button
                                 // className={`!bg-[linear-gradient(0deg,rgba(242,0,0,0.5)_0%,rgba(173,0,3,0.5)_100%)] ${style.cheerBtn}`}
                                 className={`${style.redBtn} ${style.cheerBtn}`}
                                 onClick={() =>
-                                    handleCheerBtnClick(cheerText as CheerType, "red")
+                                    handleCheerBtnClick(cheerType as CheerType, "red")
                                 }
                             >
                                 <p className="breakText">
@@ -279,13 +288,13 @@ export default function CheeringTest() {
                     })}
                 </div>
                 <div className={`${style.btnGroup} ${style.teamBlue}`}>
-                    {Object.values(cheerMap).map((cheerText) => {
+                    {Object.entries(cheerMap).map(([cheerType, cheerText]) => {
                         return (
                             <button
                                 // className={`!bg-[linear-gradient(0deg,rgba(0,96,255,0.3)_0%,rgba(11,83,197,0.3)_100%)] ${style.cheerBtn}`}
                                 className={`${style.blueBtn} ${style.cheerBtn}`}
                                 onClick={() =>
-                                    handleCheerBtnClick(cheerText as CheerType, "blue")
+                                    handleCheerBtnClick(cheerType as CheerType, "blue")
                                 }
                             >
                                 <p>
