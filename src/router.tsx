@@ -7,6 +7,7 @@ import NotePanelPage from "./pages/NotePanelPage.tsx";
 import NotificationsPage from "./pages/NotificationsPage.tsx";
 import CheeringOverlay from "./pages/CheeringOverlay/CheeringOverlay.tsx";
 import TextAnimationPage from "./pages/TextAnimation/TextAnimationPage.tsx";
+import PokerFlipperPage from "./pages/PokerFlipperPage.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -43,6 +44,10 @@ export const router = createBrowserRouter([
                     {
                         path: "textAnimation",
                         Component: TextAnimationPage
+                    },
+                    {
+                        path: "PokerFlip",
+                        Component: PokerFlipperPage
                     }
                 ]
             }

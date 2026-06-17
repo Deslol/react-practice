@@ -263,56 +263,52 @@ export default function CheeringTest() {
             </div>
             <div className={style.btnContainer}>
                 <div className={`${style.btnGroup} ${style.teamRed}`}>
-                    {Object.entries(cheerMap).map(([cheerType, cheerText]) => {
-                        return (
-                            <button
-                                // className={`!bg-[linear-gradient(0deg,rgba(242,0,0,0.5)_0%,rgba(173,0,3,0.5)_100%)] ${style.cheerBtn}`}
-                                className={`${style.redBtn} ${style.cheerBtn}`}
-                                onClick={() =>
-                                    handleCheerBtnClick(cheerType as CheerType, "red")
-                                }
-                            >
-                                <p className="breakText">
-                                    {cheerText.includes(" ") ? (
-                                        <>
-                                            {cheerText.split(" ")[0]}
-                                            <br/>
-                                            {cheerText.split(" ")[1]}
-                                        </>
-                                    ) : (
-                                        cheerText
-                                    )}
-                                </p>
-                            </button>
-                        );
-                    })}
+                    {Object.entries(cheerMap).map(([cheerType, cheerText]) => <CheerButton
+                        team="red"
+                        handleCheerBtnClick={handleCheerBtnClick}
+                        cheerType={cheerType as CheerType}
+                        cheerText={cheerText}
+                    />)
+                    }
                 </div>
                 <div className={`${style.btnGroup} ${style.teamBlue}`}>
-                    {Object.entries(cheerMap).map(([cheerType, cheerText]) => {
-                        return (
-                            <button
-                                // className={`!bg-[linear-gradient(0deg,rgba(0,96,255,0.3)_0%,rgba(11,83,197,0.3)_100%)] ${style.cheerBtn}`}
-                                className={`${style.blueBtn} ${style.cheerBtn}`}
-                                onClick={() =>
-                                    handleCheerBtnClick(cheerType as CheerType, "blue")
-                                }
-                            >
-                                <p>
-                                    {cheerText.includes(" ") ? (
-                                        <>
-                                            {cheerText.split(" ")[0]}
-                                            <br/>
-                                            {cheerText.split(" ")[1]}
-                                        </>
-                                    ) : (
-                                        cheerText
-                                    )}
-                                </p>
-                            </button>
-                        );
-                    })}
+                    {Object.entries(cheerMap).map(([cheerType, cheerText]) => <CheerButton
+                        team="blue"
+                        handleCheerBtnClick={handleCheerBtnClick}
+                        cheerType={cheerType as CheerType}
+                        cheerText={cheerText}
+                    />)
+                    }
                 </div>
             </div>
         </div>
     );
+}
+
+function CheerButton({handleCheerBtnClick, cheerType, cheerText, team}: {
+    cheerType: CheerType,
+    cheerText: string,
+    handleCheerBtnClick: (cheerType: CheerType, team: Team) => void,
+    team: Team
+}) {
+    return (
+        <button
+            className={`${team === 'blue' ? style.blueBtn : style.redBtn} ${style.cheerBtn}`}
+            onClick={() =>
+                handleCheerBtnClick(cheerType as CheerType, team)
+            }
+        >
+            <p>
+                {cheerText.includes(" ") ? (
+                    <>
+                        {cheerText.split(" ")[0]}
+                        <br/>
+                        {cheerText.split(" ")[1]}
+                    </>
+                ) : (
+                    cheerText
+                )}
+            </p>
+        </button>
+    )
 }

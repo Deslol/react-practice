@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router";
+import {Link, Outlet} from "react-router";
 
 export default function DashboardLayout() {
     return (
@@ -15,12 +15,13 @@ export default function DashboardLayout() {
                         <li><Link to="tasks/notifications">Notes Panel</Link></li>
                         <li><Link to="tasks/cheeringOverlay">Cheering Overlay</Link></li>
                         <li><Link to='tasks/textAnimation'>Text Animation</Link></li>
+                        <li><Link to='tasks/pokerFlip'>Poker Flipper</Link></li>
                     </ul>
                 </nav>
             </header>
 
             <main className="flex-1 min-h-0 flex">
-                <Outlet />
+                <Outlet/>
             </main>
         </div>
     );
