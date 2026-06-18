@@ -1,4 +1,5 @@
 import {useState, useRef, useCallback, useEffect} from "react";
+import handImg from "../../assets/reveal-poker-hand/hand.png";
 
 /*
  *  Poker Card Squeeze / Peel
@@ -151,6 +152,31 @@ const CARD_W = 200;
 const CARD_H = 290;
 const THRESHOLD = 0.50; // drag-progress to auto-complete
 
+/* Signed distance of a point along the peel axis — the ray from the anchor
+   toward the card centre, which (for a rectangle) points straight at the
+   opposite corner/edge. Positive = toward the centre/opposite side; negative
+   = behind the anchor (i.e. dragged beyond the held corner/edge). */
+function peelAxisProjection(anchor: Anchor, px: number, py: number): number {
+    let ux = CARD_W / 2 - anchor.x, uy = CARD_H / 2 - anchor.y;
+    const ulen = Math.hypot(ux, uy) || 1;
+    ux /= ulen;
+    uy /= ulen;
+    return (px - anchor.x) * ux + (py - anchor.y) * uy;
+}
+
+// ── finger sprite (photographic thumb — replaces the 👆 emoji) ───
+// hand.png (960×744) is the composited thumb: its nail points roughly LEFT
+// (rest pointing-angle ≈ -174°, ~6° above horizontal), with the fingertip
+// at ~7% / 44.6% of the image. We pin that tip to the cursor and rotate the
+// sprite about it so the nail points toward the anchor. The rotation offset
+// that replaces the emoji's +90 (up-default) is +174.
+// NOTE: hand.png already has a baked-in drop-shadow, so we add no CSS shadow.
+const HAND_W = 180;                    // rendered width (px); source is 960×744
+const HAND_H = HAND_W * (744 / 960);   // preserve aspect ratio
+const HAND_TIP_X = 0.07;    // fingertip x within the image (measured)
+const HAND_TIP_Y = 0.446;   // fingertip y within the image (measured)
+const HAND_ANGLE_OFFSET = 174;
+
 // ═════════════════════════════════════════════════════════════════
 //  Single card
 // ═════════════════════════════════════════════════════════════════
@@ -196,27 +222,40 @@ function PokerCard({rank, suit, index}: Card & {index: number}) {
         const mx = p.x - rect.left;   // mouse in card-local
         const my = p.y - rect.top;
 
-        // vector from anchor toward mouse (this is the peel direction)
+        // Signed projection of the drag onto the peel axis (anchor → centre =
+        // toward the opposite corner/edge). The reveal is constrained to
+        // "drag toward the opposite side".
         const dx = mx - anchor.x;
         const dy = my - anchor.y;
-        const dist = Math.hypot(dx, dy);
-        if (dist < 5) return;
+        const proj = peelAxisProjection(anchor, mx, my);
 
-        // The fold line sits between the anchor and the current pointer.
+        // keep the finger tracking the real pointer, whatever direction it goes
+        setCursorPos({x: mx, y: my});
+
+        // Dragged back to / past the starting anchor → soft reset: the flap
+        // retracts and progress falls to 0, but the gesture stays alive so
+        // dragging forward again resumes without re-grabbing.
+        if (proj < 5) {
+            setFold(null);
+            setProgress(0);
+            return;
+        }
+
+        // Progress is measured ALONG the intended axis (not raw distance), so
+        // sideways drift advances the peel less and backward drift undoes it.
         const maxDist = Math.hypot(CARD_W, CARD_H) * 0.55;
-        const t = clamp(dist / maxDist, 0, 1);
+        const t = clamp(proj / maxDist, 0, 1);
 
-        // unit drag direction
+        // The fold line still follows the actual pointer direction (free,
+        // natural-looking angle); only the progress metric is axis-gated.
+        const dist = Math.hypot(dx, dy);
         const ndx = dx / dist, ndy = dy / dist;
-
-        // fold-line point sits halfway between the anchor and the pointer
         const fpx = anchor.x + ndx * dist * 0.5;
         const fpy = anchor.y + ndy * dist * 0.5;
 
         // fold normal points from the kept back-side into the peeled region
         setFold({px: fpx, py: fpy, nx: ndx, ny: ndy});
         setProgress(t);
-        setCursorPos({x: mx, y: my});
     }, [dragging, anchor]);
 
     // ── end ───────────────────────────────────────────────────────
@@ -470,30 +509,36 @@ function PokerCard({rank, suit, index}: Card & {index: number}) {
                     </div>
                 )}
 
-                {/* Layer 7 — finger indicator at drag position */}
+                {/* Layer 7 — finger indicator (photographic thumb) at drag position */}
                 {!revealed && dragging && cursorPos && anchor && (
                     (() => {
-                        // 👆 points "up" by default. We rotate it so it points from
-                        // the cursor TOWARD the anchor (the held corner/edge).
+                        // Render gate only: once the pointer is dragged BEYOND the
+                        // held corner/edge (behind the anchor, away from the card
+                        // centre → negative peel-axis projection), hide the finger.
+                        // The reveal/soft-reset logic is untouched by this.
+                        if (peelAxisProjection(anchor, cursorPos.x, cursorPos.y) < 0) return null;
+
+                        // The thumb's nail points roughly LEFT at rest; rotate it so the
+                        // nail points from the cursor TOWARD the anchor (held corner/edge).
                         const dx = anchor.x - cursorPos.x;
                         const dy = anchor.y - cursorPos.y;
-                        const angleToAnchor = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+                        const angleToAnchor = Math.atan2(dy, dx) * (180 / Math.PI) + HAND_ANGLE_OFFSET;
                         return (
-                            <div style={{
-                                position: "absolute",
-                                left: cursorPos.x - 16,
-                                top: cursorPos.y - 6,
-                                width: 32, height: 32,
-                                zIndex: 30, pointerEvents: "none",
-                                fontSize: 26,
-                                lineHeight: 1,
-                                filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.4))",
-                                transform: `rotate(${angleToAnchor}deg)`,
-                                transformOrigin: "center center",
-                                transition: "none",
-                            }}>
-                                👆
-                            </div>
+                            <img
+                                src={handImg}
+                                alt=""
+                                draggable={false}
+                                style={{
+                                    position: "absolute",
+                                    left: cursorPos.x - HAND_TIP_X * HAND_W,
+                                    top: cursorPos.y - HAND_TIP_Y * HAND_H,
+                                    width: HAND_W, height: HAND_H,
+                                    zIndex: 30, pointerEvents: "none",
+                                    transform: `rotate(${angleToAnchor}deg)`,
+                                    transformOrigin: `${HAND_TIP_X * 100}% ${HAND_TIP_Y * 100}%`,
+                                    transition: "none",
+                                }}
+                            />
                         );
                     })()
                 )}
