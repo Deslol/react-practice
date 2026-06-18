@@ -17,6 +17,15 @@ export function FingerIndicator({cursor, anchor}: FingerIndicatorProps) {
     const dy = anchor.y - cursor.y;
     const angle = Math.atan2(dy, dx) * (180 / Math.PI) + HAND_ANGLE_OFFSET;
 
+    // For a CORNER peel, pin the thumb partway along the peel (anchor → drag point),
+    // so its pad rests over the value revealed in the dog-ear flap (covering it, like a
+    // real squeeze). For an EDGE peel, keep pinning it to the drag point as before.
+    const isCorner = anchor.label.includes("-");
+    const COVER = 0.525; // fraction from the corner toward the drag point (lower = nearer the value)
+    const pin = isCorner
+        ? {x: anchor.x + (cursor.x - anchor.x) * COVER, y: anchor.y + (cursor.y - anchor.y) * COVER}
+        : cursor;
+
     return (
         <img
             src={handImg}
@@ -24,8 +33,8 @@ export function FingerIndicator({cursor, anchor}: FingerIndicatorProps) {
             draggable={false}
             style={{
                 position: "absolute",
-                left: cursor.x - HAND_TIP_X * HAND_W,
-                top: cursor.y - HAND_TIP_Y * HAND_H,
+                left: pin.x - HAND_TIP_X * HAND_W,
+                top: pin.y - HAND_TIP_Y * HAND_H,
                 width: HAND_W, height: HAND_H,
                 zIndex: 30, pointerEvents: "none",
                 transform: `rotate(${angle}deg)`,
