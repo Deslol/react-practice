@@ -16,11 +16,22 @@ import handImg from "../../assets/reveal-poker-hand/hand.png";
  *    • The finger 👆 follows the drag position and points toward the anchor.
  */
 
-// ── card deck ───────────────────────────────────────────────────
-const SUITS = {hearts: "♥", diamonds: "♦", clubs: "♣", spades: "♠"};
-const COLORS = {hearts: "#C41E3A", diamonds: "#C41E3A", clubs: "#1B1B1B", spades: "#1B1B1B"};
+// ── card deck (rendered from PNG assets) ────────────────────────
+const SUIT_LETTER = {hearts: "H", diamonds: "D", clubs: "C", spades: "S"} as const;
 
-type Suit = keyof typeof SUITS;
+type Suit = keyof typeof SUIT_LETTER;
+
+// Eagerly import every card PNG (back + 52 fronts), keyed by basename:
+// e.g. "AS", "10H", "back". Vite resolves each to its built URL string.
+const CARD_IMAGES: Record<string, string> = Object.fromEntries(
+    Object.entries(
+        import.meta.glob("../../assets/reveal-poker-cards/*.png", {eager: true, import: "default"}),
+    ).map(([path, url]) => [path.split("/").pop()!.replace(".png", ""), url as string]),
+);
+
+const BACK_IMAGE = CARD_IMAGES["back"];
+// Resolve a card's front image, e.g. {rank:"10", suit:"hearts"} → "10H".
+const faceImage = (rank: string, suit: Suit) => CARD_IMAGES[`${rank}${SUIT_LETTER[suit]}`];
 
 interface Card {
     rank: string;
@@ -128,28 +139,9 @@ function nearestAnchor(localX: number, localY: number, W: number, H: number): An
     return best;
 }
 
-// ── card-back pattern (SVG data-uri for performance) ────────────
-const backPatternCSS = `
-  repeating-linear-gradient(
-    45deg,
-    rgba(42,63,102,0.35) 0px,
-    rgba(42,63,102,0.35) 1px,
-    transparent 1px,
-    transparent 8px
-  ),
-  repeating-linear-gradient(
-    -45deg,
-    rgba(42,63,102,0.25) 0px,
-    rgba(42,63,102,0.25) 1px,
-    transparent 1px,
-    transparent 8px
-  ),
-  linear-gradient(135deg, #172a4a 0%, #0f1d35 100%)
-`;
-
 // ── constants ───────────────────────────────────────────────────
 const CARD_W = 200;
-const CARD_H = 290;
+const CARD_H = 275; // matches the 342×470 card art aspect (≈0.728)
 const THRESHOLD = 0.50; // drag-progress to auto-complete
 // Cap how far the pointer can be dragged from the anchor (~246px). Past this the
 // peel/finger stop advancing instead of flying off the card. Full reveal is
@@ -346,8 +338,7 @@ function PokerCard({rank, suit, index}: Card & {index: number}) {
     }, [dragging, handleMove, handleEnd]);
 
     // ── render helpers ────────────────────────────────────────────
-    const suitChar = SUITS[suit];
-    const color = COLORS[suit];
+    const faceSrc = faceImage(rank, suit);
 
     // clip paths
     let peelClip = "none";
@@ -370,65 +361,34 @@ function PokerCard({rank, suit, index}: Card & {index: number}) {
         peelTransform = `matrix(${a}, ${c}, ${b}, ${d}, ${eTx}, ${eTy})`;
     }
 
-    // ── face card JSX (reused in both full reveal and peel) ───────
+    // ── face card (image) — reused in both full reveal and peel ───
     const faceContent = (
-        <div style={{
-            position: "absolute", inset: 0,
-            borderRadius: 14,
-            background: "#faf8f4",
-            display: "flex", flexDirection: "column",
-            alignItems: "center", justifyContent: "center",
-            color, fontFamily: "'Playfair Display', 'Georgia', serif",
-        }}>
-            {/* inner border */}
-            <div style={{
-                position: "absolute", inset: 7,
-                borderRadius: 9,
-                border: `1.5px solid ${color}22`,
-            }}/>
-            {/* top-left */}
-            <div style={{
-                position: "absolute", top: 12, left: 14,
-                display: "flex", flexDirection: "column", alignItems: "center", lineHeight: 1,
-            }}>
-                <span style={{fontSize: 24, fontWeight: 700}}>{rank}</span>
-                <span style={{fontSize: 18, marginTop: -1}}>{suitChar}</span>
-            </div>
-            {/* center */}
-            <div style={{fontSize: 82, lineHeight: 1, opacity: 0.9}}>{suitChar}</div>
-            {/* bottom-right */}
-            <div style={{
-                position: "absolute", bottom: 12, right: 14,
-                display: "flex", flexDirection: "column", alignItems: "center",
-                lineHeight: 1, transform: "rotate(180deg)",
-            }}>
-                <span style={{fontSize: 24, fontWeight: 700}}>{rank}</span>
-                <span style={{fontSize: 18, marginTop: -1}}>{suitChar}</span>
-            </div>
-        </div>
+        <img
+            src={faceSrc}
+            alt=""
+            draggable={false}
+            style={{
+                position: "absolute", inset: 0,
+                width: "100%", height: "100%",
+                objectFit: "fill",
+                pointerEvents: "none",
+            }}
+        />
     );
 
-    // ── back card JSX ─────────────────────────────────────────────
+    // ── back card (image) ─────────────────────────────────────────
     const backContent = (
-        <div style={{
-            position: "absolute", inset: 0,
-            borderRadius: 14,
-            background: backPatternCSS,
-            border: "3px solid #263d66",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            overflow: "hidden",
-        }}>
-            <div style={{
-                position: "absolute", inset: 9, borderRadius: 8,
-                border: "1.5px solid rgba(255,255,255,0.07)",
-            }}/>
-            <div style={{
-                fontSize: 46, color: "#3b5998",
-                textShadow: "0 0 24px rgba(59,89,152,0.35)",
-                fontFamily: "'Georgia', serif", position: "relative", zIndex: 1,
-            }}>♠
-            </div>
-        </div>
+        <img
+            src={BACK_IMAGE}
+            alt=""
+            draggable={false}
+            style={{
+                position: "absolute", inset: 0,
+                width: "100%", height: "100%",
+                objectFit: "fill",
+                pointerEvents: "none",
+            }}
+        />
     );
 
     return (
