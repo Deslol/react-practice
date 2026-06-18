@@ -433,27 +433,44 @@ function PokerCard({rank, suit, index}: Card & {index: number}) {
                     width: "100%", height: "100%",
                     borderRadius: 14,
                     userSelect: "none", WebkitUserSelect: "none",
-                    boxShadow: `0 ${4 + progress * 14}px ${12 + progress * 30}px rgba(0,0,0,${0.18 + progress * 0.22})`,
+                    // While peeling, the lift shadow lives on the (clipped) back layer
+                    // so it hugs the peeled silhouette; the wrapper only carries the
+                    // resting shadow once the card is fully revealed.
+                    boxShadow: revealed ? "0 18px 42px rgba(0,0,0,0.4)" : "none",
                     transition: dragging ? "none" : "box-shadow 0.4s ease",
                 }}
             >
-                {/* Layer 1 — full card back (always visible as the base) */}
+                {/* Layer 1 — card back. Clipped to the kept (drag) side while
+                    peeling, so the lifted anchor-side region falls away to reveal
+                    the container underneath — like a corner peeled off the table.
+                    peelClip is "none" when not folding, so the back is full then. */}
                 {!revealed && (
                     <div style={{
                         position: "absolute", inset: 0,
-                        borderRadius: 14, overflow: "hidden",
                         zIndex: 1,
+                        // drop-shadow (unlike box-shadow) follows the clipped alpha, so the
+                        // lift shadow hugs the peeled silhouette and doesn't ring the
+                        // exposed felt where the corner has lifted away.
+                        filter: `drop-shadow(0 ${4 + progress * 14}px ${12 + progress * 30}px rgba(0,0,0,${0.18 + progress * 0.22}))`,
+                        transition: dragging ? "none" : "filter 0.4s ease",
                     }}>
-                        {backContent}
-                        {/* hint */}
-                        {!dragging && progress === 0 && (
-                            <div style={{
-                                position: "absolute", bottom: 16, left: 0, right: 0,
-                                textAlign: "center", fontSize: 9, color: "#4a6491",
-                                letterSpacing: 2, textTransform: "uppercase",
-                                fontFamily: "'SF Mono', 'Courier New', monospace", zIndex: 3,
-                            }}>squeeze to peek</div>
-                        )}
+                        <div style={{
+                            position: "absolute", inset: 0,
+                            borderRadius: 14, overflow: "hidden",
+                            clipPath: peelClip,
+                            WebkitClipPath: peelClip,
+                        }}>
+                            {backContent}
+                            {/* hint */}
+                            {!dragging && progress === 0 && (
+                                <div style={{
+                                    position: "absolute", bottom: 16, left: 0, right: 0,
+                                    textAlign: "center", fontSize: 9, color: "#4a6491",
+                                    letterSpacing: 2, textTransform: "uppercase",
+                                    fontFamily: "'SF Mono', 'Courier New', monospace", zIndex: 3,
+                                }}>squeeze to peek</div>
+                            )}
+                        </div>
                     </div>
                 )}
 
