@@ -1,5 +1,6 @@
 import {useState, useRef, useCallback, useEffect} from "react";
 import handImg from "../../assets/reveal-poker-hand/hand.png";
+import {CardType, convertToCardCode, cardImageForCode, backImage} from "./cardImages";
 
 /*
  *  Poker Card Squeeze / Peel
@@ -16,27 +17,8 @@ import handImg from "../../assets/reveal-poker-hand/hand.png";
  *    • The finger 👆 follows the drag position and points toward the anchor.
  */
 
-// ── card deck (rendered from PNG assets) ────────────────────────
-const SUIT_LETTER = {hearts: "H", diamonds: "D", clubs: "C", spades: "S"} as const;
-
-type Suit = keyof typeof SUIT_LETTER;
-
-// Eagerly import every card PNG (back + 52 fronts), keyed by basename:
-// e.g. "AS", "10H", "back". Vite resolves each to its built URL string.
-const CARD_IMAGES: Record<string, string> = Object.fromEntries(
-    Object.entries(
-        import.meta.glob("../../assets/reveal-poker-cards/*.png", {eager: true, import: "default"}),
-    ).map(([path, url]) => [path.split("/").pop()!.replace(".png", ""), url as string]),
-);
-
-const BACK_IMAGE = CARD_IMAGES["back"];
-// Resolve a card's front image, e.g. {rank:"10", suit:"hearts"} → "10H".
-const faceImage = (rank: string, suit: Suit) => CARD_IMAGES[`${rank}${SUIT_LETTER[suit]}`];
-
-interface Card {
-    rank: string;
-    suit: Suit;
-}
+// Card art + codec live in ./cardImages — the single source of truth, ready to
+// render straight from websocket card codes (see convertCardCodeToPoker there).
 
 interface Anchor {
     x: number;
@@ -64,12 +46,13 @@ const pos = (e: PointerEventLike): Point => {
     return {x: t.clientX, y: t.clientY};
 };
 
-const DECK: Card[] = [
-    {rank: "A", suit: "spades"},
-    {rank: "K", suit: "hearts"},
-    {rank: "Q", suit: "diamonds"},
-    {rank: "J", suit: "clubs"},
-    {rank: "10", suit: "hearts"},
+// Card codes (suit nibble | value 1–13) — the same shape the websocket delivers.
+const DECK: number[] = [
+    convertToCardCode(CardType.SPADE, 1),     // A♠
+    convertToCardCode(CardType.HEART, 13),    // K♥
+    convertToCardCode(CardType.DIAMOND, 12),  // Q♦
+    convertToCardCode(CardType.CLUB, 11),     // J♣
+    convertToCardCode(CardType.HEART, 10),    // 10♥
 ];
 
 // ── math helpers ────────────────────────────────────────────────
@@ -176,7 +159,7 @@ const HAND_ANGLE_OFFSET = 174;
 // ═════════════════════════════════════════════════════════════════
 //  Single card
 // ═════════════════════════════════════════════════════════════════
-function PokerCard({rank, suit, index}: Card & {index: number}) {
+function PokerCard({code, index}: {code: number; index: number}) {
     const cardRef = useRef<HTMLDivElement>(null);
 
     // interaction state
@@ -338,7 +321,7 @@ function PokerCard({rank, suit, index}: Card & {index: number}) {
     }, [dragging, handleMove, handleEnd]);
 
     // ── render helpers ────────────────────────────────────────────
-    const faceSrc = faceImage(rank, suit);
+    const faceSrc = cardImageForCode(code);
 
     // clip paths
     let peelClip = "none";
@@ -379,7 +362,7 @@ function PokerCard({rank, suit, index}: Card & {index: number}) {
     // ── back card (image) ─────────────────────────────────────────
     const backContent = (
         <img
-            src={BACK_IMAGE}
+            src={backImage}
             alt=""
             draggable={false}
             style={{
@@ -616,8 +599,8 @@ export default function PokerFlip() {
                 position: "relative", zIndex: 1,
                 maxWidth: 760,
             }}>
-                {DECK.map((c, i) => (
-                    <PokerCard key={`${c.rank}-${c.suit}`} {...c} index={i}/>
+                {DECK.map((code, i) => (
+                    <PokerCard key={`${code}-${i}`} code={code} index={i}/>
                 ))}
             </div>
 
