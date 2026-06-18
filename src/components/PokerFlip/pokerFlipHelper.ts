@@ -85,20 +85,14 @@ export function peelAxisProjection(anchor: Anchor, px: number, py: number): numb
 }
 
 /* Given the current fold, return the CSS clip-path for the peeled (drag-side)
-   region and the 2D-reflection matrix that mirrors the face across the fold
-   line. Reflection across a line through (px,py) with unit normal (nx,ny):
-     M = I − 2·n·nᵀ  (translation-adjusted). */
+   region and the transform applied to the flap's face: a 180° ROTATION about the
+   fold point (scaleX(-1)·scaleY(-1)), so the rank reads upright while peeking
+   rather than mirrored. About the fold point (px,py):
+     x' = 2·px − x,  y' = 2·py − y  →  matrix(-1, 0, 0, -1, 2px, 2py). */
 export function foldClipAndTransform(fold: Fold): {clip: string; transform: string} {
     const {px, py, nx, ny} = fold;
     const clip = halfPlaneClip(px, py, nx, ny, 1, CARD_W, CARD_H);
-
-    const a = 1 - 2 * nx * nx;
-    const b = -2 * nx * ny;
-    const c = -2 * nx * ny;
-    const d = 1 - 2 * ny * ny;
-    const tx = 2 * px * nx * nx + 2 * py * nx * ny;
-    const ty = 2 * px * nx * ny + 2 * py * ny * ny;
-    const transform = `matrix(${a}, ${c}, ${b}, ${d}, ${tx}, ${ty})`;
+    const transform = `matrix(-1, 0, 0, -1, ${2 * px}, ${2 * py})`;
 
     return {clip, transform};
 }
