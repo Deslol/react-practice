@@ -1,10 +1,10 @@
-import PokerFlip from "../components/PokerFlip/PokerFlip.tsx";
+import PokerFlipExample from "../components/PokerFlip/PokerFlipExample.tsx";
 
 export default function PokerFlipperPage() {
 
     return (
         <div className="flex justify-center">
-            <PokerFlip/>
+            <PokerFlipExample/>
         </div>
     )
 }

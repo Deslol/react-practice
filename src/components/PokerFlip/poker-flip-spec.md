@@ -12,10 +12,54 @@ Cards are rendered from **PNG image assets** (a full 52-card deck + a card back)
 
 | File | Responsibility |
 |------|----------------|
-| `PokerFlip.tsx` | The interactive component: gesture handling, fold geometry, layering, animation. |
+| `RevealPokerCard.tsx` | The **reusable card** (presentational): renders the peel layers from gesture state; owns the `tapToReset` affordance. |
+| `usePeelGesture.ts` | The squeeze/peel **gesture state machine** (hook) — all interaction logic, no rendering. |
+| `FingerIndicator.tsx` | The photographic thumb drag-indicator sub-component. |
+| `PokerFlipExample.tsx` | Demo page — felt table, title, legend, and a sample `DECK` of card codes. The showcase, not the reusable part. |
 | `cardImages.ts` | Single source of truth for card art + the card-code **codec** and image lookup. |
+| `constants.ts` | All tunable constants (geometry, peel/reveal, animation, finger sprite). |
+| `pokerFlipInterface.ts` | Shared types (`Anchor`, `Fold`, `Point`, `PointerEventLike`, component props, hook types). |
+| `pokerFlipHelper.ts` | Pure helpers (`pos`, `clamp`, `lerp`, `halfPlaneClip`, `nearestAnchor`, `peelAxisProjection`, `foldClipAndTransform`). |
 | `../../assets/reveal-poker-cards/*.png` | The deck: `back.png` + 52 fronts (`AS.png`, `10H.png`, `KD.png`, …), 342 × 470. |
 | `../../assets/reveal-poker-hand/hand.png` | The photographic thumb sprite used as the drag indicator, 960 × 744. |
+
+---
+
+## Module Architecture
+
+Logic and presentation are separated so the card is reusable and the gesture is testable in isolation:
+
+- **`usePeelGesture(options)`** owns the state machine — `dragging`, `revealed`, `anchor`, `progress`, `cursorPos`, `fold`, the `cardRef`, the pointer handlers, and the global drag-listener effect. It is card-agnostic: it takes `{ onReveal?, onReset? }` and returns the `PeelGesture` state plus `start` / `reset` handlers. No rendering, no card-specific data.
+- **`RevealPokerCard`** is purely presentational. It calls the hook, derives the peel clip + face reflection (`foldClipAndTransform`), resolves the `tapToReset` mode, and renders the layered DOM. It maps its card-specific `onReveal(code)` onto the hook's `onReveal()`.
+- **`FingerIndicator`** is a self-contained overlay (position + rotation + the beyond-anchor hide gate).
+- **`PokerFlipExample`** is just a demo host.
+
+So the same gesture could drive a different renderer, and `usePeelGesture` can be unit-tested without a DOM card.
+
+---
+
+## Component API — `<RevealPokerCard>`
+
+| Prop | Type | Default | Meaning |
+|------|------|---------|---------|
+| `code` | `number` | — (required) | Card code (suit nibble \| value 1–13) to render; typically decoded from server data. |
+| `index` | `number` | `0` | Position in a group; drives the staggered entrance animation only. |
+| `onReveal` | `(code: number) => void` | — | Fired once the card crosses the threshold and fully reveals. |
+| `onReset` | `() => void` | — | Fired whenever a revealed card is reset to face-down. |
+| `tapToReset` | `boolean \| ((reset: () => void) => ReactNode)` | `true` | Controls the post-reveal reset affordance (below). |
+
+**`tapToReset` modes:**
+
+- **omitted / `true`** — default: tapping the revealed card resets it, with a "tap to reset" hint (cursor `pointer`).
+- **`false`** — disabled: the revealed card stays put — no tap-to-reset, no hint (cursor `default`).
+- **render function** — custom slot: your UI is rendered over the revealed face and receives `reset()`; whole-card tap is left to your slot.
+
+```tsx
+<RevealPokerCard code={code} />                                   // default
+<RevealPokerCard code={code} tapToReset={false} />                // stays revealed
+<RevealPokerCard code={code}                                      // custom slot
+    tapToReset={(reset) => <button onClick={reset}>✕</button>} />
+```
 
 ---
 
@@ -28,7 +72,7 @@ Cards are rendered from **PNG image assets** (a full 52-card deck + a card back)
 3. **Release**:
    - If progress ≥ 50 % threshold → card **fully reveals** (face-up).
    - If progress < 50 % → card **snaps back** (spring animation, stays face-down).
-4. **Tap a revealed card** to reset it face-down.
+4. **Tap a revealed card** to reset it face-down — controllable via the `tapToReset` prop (default / disabled / custom slot; see Component API).
 
 ### Anchor Selection — Nearest of 8
 
@@ -57,7 +101,7 @@ This is implemented by `peelAxisProjection(anchor, px, py)`.
 
 ### Soft Reset (drag back to the anchor)
 
-If the pointer is dragged back to or past the anchor along the peel axis (`proj < 5`), the flap **retracts and progress falls to 0**, but the gesture stays alive — dragging forward again resumes it without re-grabbing. Releasing at progress 0 simply snaps back.
+If the pointer is dragged back to or past the anchor along the peel axis (`proj < SOFT_RESET_PROJ`, 5 px), the flap **retracts and progress falls to 0**, but the gesture stays alive — dragging forward again resumes it without re-grabbing. Releasing at progress 0 simply snaps back.
 
 ### Drag-Distance Clamp
 
@@ -86,7 +130,7 @@ The peel is built from stacked layers with CSS `clip-path` geometry and a 2D ref
 ## Fold-Line Geometry
 
 - A **fold line** is computed perpendicular to the drag vector, positioned **halfway between the anchor and the current (clamped) pointer**. The fold line follows the actual pointer direction for a natural angle; only the *progress* metric is axis-gated.
-- Reveal **progress** `= clamp(proj / maxDist, 0, 1)`, where `proj` is the peel-axis projection and `maxDist = hypot(W, H) · 0.55 ≈ 194 px`.
+- Reveal **progress** `= clamp(proj / MAX_PEEL_DIST, 0, 1)`, where `proj` is the peel-axis projection and `MAX_PEEL_DIST = hypot(W, H) · 0.55 ≈ 194 px`.
 - The **card back** (Layer 1) is clipped to the **drag side** of the fold line (`halfPlaneClip(..., side = 1)`), exposing the container on the anchor side.
 - The **peeled flap** (Layer 2) is clipped to the **same drag-side** half-plane, with the face image reflected across the fold line:
 
@@ -154,7 +198,7 @@ A photographic **thumb sprite** (`hand.png`, 960 × 744) replaces the original �
 
 - A matched **52-card deck + back**, each PNG **342 × 470** (aspect ≈ 0.728), with a small (~5 px) transparent margin, gently rounded corners, and effectively no baked shadow.
 - Filenames are `{rank}{suit}.png` — rank ∈ `A,2…10,J,Q,K`; suit ∈ `S,H,D,C` (e.g. `AS.png`, `10H.png`, `KD.png`). The back is `back.png`.
-- The card container is **200 × 275** to match the art aspect (no distortion). All geometry derives from `CARD_W` / `CARD_H`, so changing them re-derives anchors, `maxDist`, `MAX_DRAG_DIST`, and clipping automatically.
+- The card container is **200 × 275** to match the art aspect (no distortion). All geometry derives from `CARD_W` / `CARD_H`, so changing them re-derives anchors, `MAX_PEEL_DIST`, `MAX_DRAG_DIST`, and clipping automatically.
 - Faces/back are `<img>` filling `inset:0` (`objectFit: fill`, `draggable={false}`, `pointerEvents:none`). The existing layer wrappers keep their `borderRadius` (rounded-corner containment for the reflected flap) and `clip-path` (the fold).
 - **Face-down is a UI state (`revealed`), not a card value** — the back is shown until the card is revealed, independent of the card code.
 
@@ -198,13 +242,13 @@ import.meta.glob("../../assets/reveal-poker-cards/*.png", { eager: true, import:
 
 ### Rendering & WebSocket-readiness
 
-`DECK` is an array of card **codes** (`number[]`), built with `convertToCardCode(...)` — the same shape a websocket delivers. `PokerCard({ code })` resolves its face via `cardImageForCode(code)`; the back uses `backImage`. Feeding live data is therefore one line: decode bytes → `code` → `<PokerCard code={code} />`.
+`DECK` is an array of card **codes** (`number[]`), built with `convertToCardCode(...)` — the same shape a websocket delivers. `RevealPokerCard` resolves its face via `cardImageForCode(code)`; the back uses `backImage`. Feeding live data is therefore one line: decode bytes → `code` → `<RevealPokerCard code={code} />`.
 
 ---
 
 ## Technical Notes
 
-- **Framework**: React with hooks (`useState`, `useRef`, `useCallback`, `useEffect`).
+- **Framework**: React with hooks. Interaction logic lives in the `usePeelGesture` hook (state machine); `RevealPokerCard` is presentational. The card self-injects its keyframes once, so it's drop-in reusable without any host-provided CSS.
 - **No external dependencies** beyond React.
 - **Touch + mouse**: `onMouseDown` / `onTouchStart` on the card, with global `mousemove` / `touchmove` / `mouseup` / `touchend` listeners while dragging. `touchmove` uses `{ passive: false }` to allow `preventDefault()`.
 - **Card dimensions**: 200 × 275 px (matches the 342 × 470 art aspect).
@@ -222,8 +266,12 @@ import.meta.glob("../../assets/reveal-poker-cards/*.png", { eager: true, import:
 |----------|-------|---------|
 | `CARD_W` × `CARD_H` | 200 × 275 | Card container size (matches art aspect) |
 | `THRESHOLD` | 0.50 | Drag progress to auto-complete on release |
-| `maxDist` | `hypot(W,H)·0.55 ≈ 194` | Peel-axis distance at which progress = 1 |
+| `MAX_PEEL_DIST` | `hypot(W,H)·0.55 ≈ 194` | Peel-axis distance at which progress = 1 |
 | `MAX_DRAG_DIST` | `hypot(W,H)·0.7 ≈ 246` | Drag clamp from the anchor |
+| `SOFT_RESET_PROJ` | 5 | Below this projection (px) the drag is a soft reset |
+| `CARD_RADIUS` | 14 | Card corner radius (layer clips) |
+| `SPRING_BACK_MS` | 350 | Snap-back animation duration |
+| `ENTRANCE_STAGGER_S` | 0.12 | Per-card entrance delay (× index) |
 | `HAND_W` | 180 | Finger sprite width (px) |
 | `HAND_TIP_X` / `HAND_TIP_Y` | 0.07 / 0.446 | Fingertip position within `hand.png` |
 | `HAND_ANGLE_OFFSET` | 174 | Rotation offset for the thumb's rest pose |
