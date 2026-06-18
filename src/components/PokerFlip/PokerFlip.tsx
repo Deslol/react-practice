@@ -151,6 +151,10 @@ const backPatternCSS = `
 const CARD_W = 200;
 const CARD_H = 290;
 const THRESHOLD = 0.50; // drag-progress to auto-complete
+// Cap how far the pointer can be dragged from the anchor (~246px). Past this the
+// peel/finger stop advancing instead of flying off the card. Full reveal is
+// reached well before this (at hypot(W,H)·0.55 ≈ 194px), so it isn't restricted.
+const MAX_DRAG_DIST = Math.hypot(CARD_W, CARD_H) * 0.7;
 
 /* Signed distance of a point along the peel axis — the ray from the anchor
    toward the card centre, which (for a rectangle) points straight at the
@@ -219,8 +223,21 @@ function PokerCard({rank, suit, index}: Card & {index: number}) {
         e.preventDefault();
         const rect = cardRef.current.getBoundingClientRect();
         const p = pos(e);
-        const mx = p.x - rect.left;   // mouse in card-local
-        const my = p.y - rect.top;
+        const rawX = p.x - rect.left;   // raw pointer in card-local
+        const rawY = p.y - rect.top;
+
+        // Clamp the pointer to a max distance from the anchor: dragging far off
+        // the card would otherwise fling the finger across the screen. Past the
+        // cap the peel just stops advancing — direction is preserved, the
+        // gesture stays alive, and dragging back inside resumes it.
+        let mx = rawX, my = rawY;
+        const rdx = rawX - anchor.x, rdy = rawY - anchor.y;
+        const rawDist = Math.hypot(rdx, rdy);
+        if (rawDist > MAX_DRAG_DIST) {
+            const k = MAX_DRAG_DIST / rawDist;
+            mx = anchor.x + rdx * k;
+            my = anchor.y + rdy * k;
+        }
 
         // Signed projection of the drag onto the peel axis (anchor → centre =
         // toward the opposite corner/edge). The reveal is constrained to
