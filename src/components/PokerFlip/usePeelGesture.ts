@@ -3,7 +3,7 @@ import {
     CARD_W, CARD_H, THRESHOLD,
     MAX_PEEL_DIST, MAX_DRAG_DIST, SOFT_RESET_PROJ, SPRING_BACK_MS,
 } from "./constants";
-import {clamp, lerp, pos, nearestAnchor, peelAxisProjection} from "./pokerFlipHelper";
+import {clamp, lerp, pos, nearestAnchor} from "./pokerFlipHelper";
 import type {Anchor, Fold, Point, PointerEventLike, PeelGesture, UsePeelGestureOptions} from "./pokerFlipInterface";
 
 /**
@@ -63,12 +63,25 @@ export function usePeelGesture({onReveal, onReset}: UsePeelGestureOptions = {}):
             my = anchor.y + rdy * k;
         }
 
-        // Progress is the drag's projection onto the peel axis (anchor → centre =
-        // toward the opposite corner/edge), so off-axis drift advances it less.
-        const proj = peelAxisProjection(anchor, mx, my);
+        // The peel is LOCKED to the peel axis: U = anchor → card centre, which for a
+        // rectangle points straight at the opposite corner/edge. The pointer only
+        // controls how far ALONG that axis the peel advances (its projection) — any
+        // off-axis movement is ignored, so the fold direction never wobbles. Grab the
+        // top-left and the peel always runs to the bottom-right; an edge peels straight
+        // across. (Vice-versa for every anchor.)
+        // Snap the peel axis to the 8 natural directions: a CORNER peels along the
+        // 45° diagonal away from the held corner (a natural dog-ear), an EDGE peels
+        // straight across. Math.sign() returns 0 on an edge anchor's centred axis, so
+        // edges stay axis-aligned; corners get equal ±1 components → a true 45°.
+        let ux = Math.sign(CARD_W / 2 - anchor.x), uy = Math.sign(CARD_H / 2 - anchor.y);
+        const ulen = Math.hypot(ux, uy) || 1;
+        ux /= ulen;
+        uy /= ulen;
+        const proj = (mx - anchor.x) * ux + (my - anchor.y) * uy;
 
-        // keep the finger tracking the (clamped) pointer, whatever direction it goes
-        setCursorPos({x: mx, y: my});
+        // The finger rides along that axis at the current peel depth, so it always
+        // points straight down the peel direction instead of off to the side.
+        setCursorPos({x: anchor.x + ux * proj, y: anchor.y + uy * proj});
 
         // Dragged back to / past the anchor → soft reset: flap retracts, progress 0,
         // but the gesture stays alive so dragging forward again resumes it.
@@ -80,12 +93,10 @@ export function usePeelGesture({onReveal, onReset}: UsePeelGestureOptions = {}):
 
         const t = clamp(proj / MAX_PEEL_DIST, 0, 1);
 
-        // The fold line follows the actual pointer direction (free, natural angle);
-        // only the progress metric is axis-gated.
-        const dx = mx - anchor.x, dy = my - anchor.y;
-        const dist = Math.hypot(dx, dy);
-        const ndx = dx / dist, ndy = dy / dist;
-        setFold({px: anchor.x + ndx * dist * 0.5, py: anchor.y + ndy * dist * 0.5, nx: ndx, ny: ndy});
+        // Fold line is perpendicular to the fixed peel axis, at the midpoint of the
+        // peeled span — always a clean diagonal (corners) or straight across (edges),
+        // so the folded flap stays congruent to the area it lifted from.
+        setFold({px: anchor.x + ux * proj * 0.5, py: anchor.y + uy * proj * 0.5, nx: ux, ny: uy});
         setProgress(t);
     }, [dragging, anchor]);
 
