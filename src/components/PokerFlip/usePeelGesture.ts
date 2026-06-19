@@ -22,31 +22,32 @@ export function usePeelGesture({onReveal, onReset}: UsePeelGestureOptions = {}):
     const [revealed, setRevealed] = useState(false);
     const [anchor, setAnchor] = useState<Anchor | null>(null);
     const [progress, setProgress] = useState(0);                 // 0 → 1
-    const [cursorPos, setCursorPos] = useState<Point | null>(null); // card-local
     const [fold, setFold] = useState<Fold | null>(null);         // derived fold geometry
 
     const animRef = useRef<number | null>(null);
+    const rectRef = useRef<DOMRect | null>(null); // card rect, captured once per gesture (avoids per-frame reflow)
 
     // ── start ─────────────────────────────────────────────────────
     const handleStart = useCallback((e: PointerEventLike) => {
         if (revealed || !cardRef.current) return;
         e.preventDefault();
         const rect = cardRef.current.getBoundingClientRect();
+        rectRef.current = rect; // reuse for the whole drag — the card can't move mid-peel
         const p = pos(e);
         const a = nearestAnchor(p.x - rect.left, p.y - rect.top, CARD_W, CARD_H);
         setAnchor(a);
         setDragging(true);
         setProgress(0);
         setFold(null);
-        setCursorPos({x: p.x - rect.left, y: p.y - rect.top});
         if (animRef.current) cancelAnimationFrame(animRef.current);
     }, [revealed]);
 
     // ── move ──────────────────────────────────────────────────────
     const handleMove = useCallback((e: PointerEventLike) => {
-        if (!dragging || !anchor || !cardRef.current) return;
+        if (!dragging || !anchor) return;
         e.preventDefault();
-        const rect = cardRef.current.getBoundingClientRect();
+        const rect = rectRef.current;   // captured in handleStart — reusing it avoids a
+        if (!rect) return;              // forced synchronous layout flush on every frame
         const p = pos(e);
         const rawX = p.x - rect.left;
         const rawY = p.y - rect.top;
@@ -79,10 +80,6 @@ export function usePeelGesture({onReveal, onReset}: UsePeelGestureOptions = {}):
         uy /= ulen;
         const proj = (mx - anchor.x) * ux + (my - anchor.y) * uy;
 
-        // The finger rides along that axis at the current peel depth, so it always
-        // points straight down the peel direction instead of off to the side.
-        setCursorPos({x: anchor.x + ux * proj, y: anchor.y + uy * proj});
-
         // Dragged back to / past the anchor → soft reset: flap retracts, progress 0,
         // but the gesture stays alive so dragging forward again resumes it.
         if (proj < SOFT_RESET_PROJ) {
@@ -110,7 +107,6 @@ export function usePeelGesture({onReveal, onReset}: UsePeelGestureOptions = {}):
             setRevealed(true);
             setFold(null);
             setProgress(1);
-            setCursorPos(null);
             onReveal?.();
             return;
         }
@@ -127,12 +123,13 @@ export function usePeelGesture({onReveal, onReset}: UsePeelGestureOptions = {}):
             setProgress(lerp(startP, 0, e));
 
             if (startFold && anchor) {
-                const px = lerp(startFold.px, anchor.x, e);
-                const py = lerp(startFold.py, anchor.y, e);
-                setFold({...startFold, px, py});
-                // Keep the finger attached during spring-back: the cursor retracts with
-                // the fold (cursor = 2·foldPoint − anchor, the same relation as in handleMove).
-                setCursorPos({x: 2 * px - anchor.x, y: 2 * py - anchor.y});
+                // Retract the fold toward the anchor; cursorPos (derived from fold)
+                // follows automatically, keeping the finger attached during spring-back.
+                setFold({
+                    ...startFold,
+                    px: lerp(startFold.px, anchor.x, e),
+                    py: lerp(startFold.py, anchor.y, e),
+                });
             }
 
             if (elapsed < 1) {
@@ -140,7 +137,6 @@ export function usePeelGesture({onReveal, onReset}: UsePeelGestureOptions = {}):
             } else {
                 setFold(null);
                 setProgress(0);
-                setCursorPos(null);
             }
         };
         animRef.current = requestAnimationFrame(tick);
@@ -152,7 +148,6 @@ export function usePeelGesture({onReveal, onReset}: UsePeelGestureOptions = {}):
         setFold(null);
         setProgress(0);
         setAnchor(null);
-        setCursorPos(null);
         onReset?.();
     }, [onReset]);
 
@@ -172,6 +167,18 @@ export function usePeelGesture({onReveal, onReset}: UsePeelGestureOptions = {}):
             window.removeEventListener("touchend", up);
         };
     }, [dragging, handleMove, handleEnd]);
+
+    // Cancel any in-flight spring-back frame if the card unmounts mid-animation.
+    useEffect(() => () => {
+        if (animRef.current) cancelAnimationFrame(animRef.current);
+    }, []);
+
+    // cursorPos is fully derived from the fold: the drag point is the fold point
+    // reflected across the anchor (cursor = 2·foldPoint − anchor). Non-null iff a fold
+    // exists, which also matches the finger's render gate.
+    const cursorPos: Point | null = fold && anchor
+        ? {x: 2 * fold.px - anchor.x, y: 2 * fold.py - anchor.y}
+        : null;
 
     return {cardRef, dragging, revealed, anchor, progress, cursorPos, fold, start: handleStart, reset};
 }

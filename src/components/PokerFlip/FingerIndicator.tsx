@@ -10,6 +10,8 @@ const IDX_LR_X = 32;  // left / right peel
 const IDX_LR_Y = 36;
 const IDX_TB_X = 20;  // top / bottom peel — tune these independently
 const IDX_TB_Y = 45;
+const IDX_C_X = 30;   // corner peel — rank-index inset from the held corner
+const IDX_C_Y = 40;
 
 /**
  * Photographic thumb(s) that follow the peel and aim the nail at the anchor.
@@ -28,12 +30,13 @@ export function FingerIndicator({cursor, anchor}: FingerIndicatorProps) {
 
     const isCorner = anchor.label.includes("-");
 
-    // Corner: one thumb over the dog-ear value, a fraction of the way along the peel.
-    const COVER = 0.45;
-    const coverPin: Point = {
-        x: anchor.x + (cursor.x - anchor.x) * COVER,
-        y: anchor.y + (cursor.y - anchor.y) * COVER,
-    };
+    // Corner: one thumb over the value. Like the edges, the value (rank index) surfaces
+    // at the 180° fold-reflection of the held corner's index — anchor + cursor − index —
+    // so tracking that makes the thumb move at the SAME rate as the reveal. (A fixed
+    // fraction of the drag lagged: the reveal runs at ~cursor rate, ~2× a 0.45 fraction.)
+    const cIdxX = anchor.x === 0 ? IDX_C_X : CARD_W - IDX_C_X;
+    const cIdxY = anchor.y === 0 ? IDX_C_Y : CARD_H - IDX_C_Y;
+    const coverPin: Point = {x: anchor.x + cursor.x - cIdxX, y: anchor.y + cursor.y - cIdxY};
 
     // Edge: the value (rank index) surfaces at the 180° fold-reflection of the card's
     // near-side index about F = (anchor + cursor) / 2, i.e. 2F − index = anchor +

@@ -70,6 +70,7 @@ export function RevealPokerCard({code, index = 0, onReveal, onReset, tapToReset}
         >
             <div
                 ref={cardRef}
+                data-testid="poker-card"
                 onMouseDown={onPress}
                 onTouchStart={onPress}
                 style={{
