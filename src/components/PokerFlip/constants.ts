@@ -13,10 +13,10 @@ export const THRESHOLD = 0.5; // drag progress at which release auto-completes t
 // Peel-axis distance at which progress reaches 1 (full reveal on release).
 export const MAX_PEEL_DIST = Math.hypot(CARD_W, CARD_H) * 0.55; // ≈ 194px
 
-// Cap how far the pointer can be dragged from the anchor (~246px). Past this the
-// peel/finger freeze instead of flying off the card; full reveal is reached well
-// before it (MAX_PEEL_DIST), so peeking is never restricted.
-export const MAX_DRAG_DIST = Math.hypot(CARD_W, CARD_H) * 0.7;
+// Cap how far the pointer can be dragged from the anchor. Set equal to MAX_PEEL_DIST
+// so the peel/finger freeze exactly when progress (the green bar) reaches 100% — no
+// dead zone where the bar reads full but the drag can still advance.
+export const MAX_DRAG_DIST = Math.hypot(CARD_W, CARD_H) * 0.55; // == MAX_PEEL_DIST
 
 // Below this peel-axis projection (px from the anchor) the drag is a soft reset:
 // the flap retracts and progress falls to 0, but the gesture stays alive.
