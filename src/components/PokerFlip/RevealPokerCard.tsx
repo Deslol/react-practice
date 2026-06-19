@@ -38,15 +38,18 @@ const cardImgStyle: CSSProperties = {
     pointerEvents: "none",
 };
 
-export function RevealPokerCard({code, index = 0, onReveal, onReset, tapToReset}: RevealPokerCardProps) {
+export function RevealPokerCard({code, index = 0, onReveal, onReset, tapToReset, hint = false, showProgressBar = false}: RevealPokerCardProps) {
     const handleReveal = useCallback(() => onReveal?.(code), [onReveal, code]);
     const {cardRef, dragging, revealed, anchor, progress, cursorPos, fold, start, reset} =
         usePeelGesture({onReveal: handleReveal, onReset});
 
     // Reset affordance modes (see RevealPokerCardProps.tapToReset):
     //   custom slot → render fn controls reset;  false → disabled;  default → card-tap resets.
+    // The built-in tap-to-reset (its "tap to reset" hint + whole-card tap) is also
+    // suppressed when hint===false — disabling the card text turns it off too. A custom
+    // reset slot (tapToReset render-fn) is unaffected, since that's UI you opted into.
     const customReset = typeof tapToReset === "function" ? tapToReset : null;
-    const tapResetsCard = tapToReset !== false && !customReset;
+    const tapResetsCard = tapToReset !== false && !customReset && hint !== false;
 
     // peel clip + face reflection for the current fold
     const {clip: peelClip, transform: peelTransform} =
@@ -103,13 +106,17 @@ export function RevealPokerCard({code, index = 0, onReveal, onReset, tapToReset}
                             clipPath: peelClip, WebkitClipPath: peelClip,
                         }}>
                             {backImg}
-                            {!dragging && progress === 0 && (
-                                <div style={{
-                                    position: "absolute", bottom: 16, left: 0, right: 0,
-                                    textAlign: "center", fontSize: 9, color: "#4a6491",
-                                    letterSpacing: 2, textTransform: "uppercase",
-                                    fontFamily: "'SF Mono', 'Courier New', monospace", zIndex: 3,
-                                }}>squeeze to peek</div>
+                            {/* Idle hint: built-in text (hint===true), a custom slot
+                                (hint is a node), or nothing (hint===false). */}
+                            {!dragging && progress === 0 && hint !== false && (
+                                hint === true ? (
+                                    <div style={{
+                                        position: "absolute", bottom: 16, left: 0, right: 0,
+                                        textAlign: "center", fontSize: 9, color: "#4a6491",
+                                        letterSpacing: 2, textTransform: "uppercase",
+                                        fontFamily: "'SF Mono', 'Courier New', monospace", zIndex: 3,
+                                    }}>squeeze to peek</div>
+                                ) : hint
                             )}
                         </div>
                     </div>
@@ -129,8 +136,8 @@ export function RevealPokerCard({code, index = 0, onReveal, onReset, tapToReset}
                     </div>
                 )}
 
-                {/* Anchor label while dragging */}
-                {!revealed && dragging && anchor && (
+                {/* Anchor label while dragging (suppressed when text is disabled) */}
+                {!revealed && dragging && anchor && hint !== false && (
                     <div style={{
                         position: "absolute", top: 8, left: 0, right: 0,
                         textAlign: "center", fontSize: 9, color: "#7ba3d4",
@@ -143,8 +150,8 @@ export function RevealPokerCard({code, index = 0, onReveal, onReset, tapToReset}
                     </div>
                 )}
 
-                {/* Progress bar */}
-                {!revealed && progress > 0.01 && (
+                {/* Progress bar (showProgressBar={false} to hide) */}
+                {!revealed && showProgressBar && progress > 0.01 && (
                     <div style={{
                         position: "absolute", bottom: 8, left: 20, right: 20,
                         height: 3, borderRadius: 2,

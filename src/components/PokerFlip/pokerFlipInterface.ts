@@ -52,6 +52,16 @@ export interface RevealPokerCardProps {
      *                       `reset()`; whole-card tap is left to your slot.
      */
     tapToReset?: boolean | ResetSlot;
+    /**
+     * The face-down instructional text:
+     *  - omitted / `true` → default "squeeze to peek" hint (and the drag anchor label).
+     *  - `false`          → no built-in text at all (hint and anchor label hidden).
+     *  - ReactNode        → your own content rendered in the hint's place — a slot for
+     *                       custom hints/badges (the anchor label still shows).
+     */
+    hint?: boolean | ReactNode;
+    /** Show the thin progress bar while peeling. Default `true`. */
+    showProgressBar?: boolean;
 }
 
 /** Props for the photographic thumb drag-indicator. */
