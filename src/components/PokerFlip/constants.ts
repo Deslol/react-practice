@@ -31,7 +31,7 @@ export const ENTRANCE_STAGGER_S = 0.12;  // per-card entrance delay (× index)
 // with the fingertip at ~7% / 44.6% of the image. We pin that tip to the cursor
 // and rotate about it so the nail points toward the anchor; +174 replaces the
 // emoji's +90 up-default. hand.png has a baked-in shadow, so no CSS shadow is added.
-export const HAND_W = 180;                    // rendered width (px); source is 960×744
+export const HAND_W = 190;                    // rendered width (px); source is 960×744
 export const HAND_H = HAND_W * (744 / 960);   // preserve aspect ratio
 export const HAND_TIP_X = 0.07;               // fingertip x within the image (measured)
 export const HAND_TIP_Y = 0.446;              // fingertip y within the image (measured)

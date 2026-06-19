@@ -160,10 +160,11 @@ export function RevealPokerCard({code, index = 0, onReveal, onReset, tapToReset}
                     </div>
                 )}
 
-                {/* Finger indicator (photographic thumb) — only while actually peeling
-                    (fold set). A bare click leaves fold null with the cursor on the
-                    anchor, which would otherwise fling the thumbs off-card diagonally. */}
-                {!revealed && dragging && fold && cursorPos && anchor && (
+                {/* Finger indicator (photographic thumb) — shown whenever a fold exists,
+                    i.e. while peeling AND through the spring-back (so it stays attached as
+                    the card retracts). A bare click leaves fold null → no thumbs, which
+                    also avoids flinging them off-card diagonally. */}
+                {!revealed && fold && cursorPos && anchor && (
                     <FingerIndicator cursor={cursorPos} anchor={anchor}/>
                 )}
 

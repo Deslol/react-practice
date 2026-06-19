@@ -127,7 +127,12 @@ export function usePeelGesture({onReveal, onReset}: UsePeelGestureOptions = {}):
             setProgress(lerp(startP, 0, e));
 
             if (startFold && anchor) {
-                setFold({...startFold, px: lerp(startFold.px, anchor.x, e), py: lerp(startFold.py, anchor.y, e)});
+                const px = lerp(startFold.px, anchor.x, e);
+                const py = lerp(startFold.py, anchor.y, e);
+                setFold({...startFold, px, py});
+                // Keep the finger attached during spring-back: the cursor retracts with
+                // the fold (cursor = 2·foldPoint − anchor, the same relation as in handleMove).
+                setCursorPos({x: 2 * px - anchor.x, y: 2 * py - anchor.y});
             }
 
             if (elapsed < 1) {
