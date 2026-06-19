@@ -3,9 +3,35 @@
 // ─────────────────────────────────────────────────────────────────
 
 // ── card geometry ───────────────────────────────────────────────
+// CARD_W × CARD_H is the BASE/logical space the whole gesture + peel geometry works in.
+// A card can render at any named size (below) by scaling this base — the geometry is
+// unchanged and only the pointer mapping divides by the scale.
 export const CARD_W = 200;
 export const CARD_H = 275;   // matches the 342×470 card-art aspect (≈0.728)
-export const CARD_RADIUS = 14; // corner radius used by the layer clips
+export const CARD_RADIUS = 14; // corner radius used by the layer clips (base units)
+
+// ── card sizes ──────────────────────────────────────────────────
+// Named presets — mobile / pc × small / default / large. A const-object "enum" (not a
+// TS enum, which erasableSyntaxOnly forbids), same pattern as CardType in cardImages.
+// All keep the card-art aspect (≈0.728); pcDefault == the base CARD_W × CARD_H.
+export const CardSize = {
+    mbS: "mbS",
+    mbDefault: "mbDefault",
+    mbL: "mbL",
+    pcS: "pcS",
+    pcDefault: "pcDefault",
+    pcL: "pcL",
+} as const;
+export type CardSize = (typeof CardSize)[keyof typeof CardSize];
+
+export const CARD_SIZES: Record<CardSize, {width: number; height: number}> = {
+    mbS: {width: 90, height: 124},
+    mbDefault: {width: 120, height: 165},
+    mbL: {width: 150, height: 206},
+    pcS: {width: 170, height: 234},
+    pcDefault: {width: CARD_W, height: CARD_H}, // 200 × 275 — the base
+    pcL: {width: 260, height: 357},
+};
 
 // ── peel / reveal tuning ────────────────────────────────────────
 export const THRESHOLD = 0.5; // drag progress at which release auto-completes the reveal

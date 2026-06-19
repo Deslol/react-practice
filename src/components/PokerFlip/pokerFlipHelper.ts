@@ -14,6 +14,20 @@ export const pos = (e: PointerEventLike): Point => {
     return {x: t.clientX, y: t.clientY};
 };
 
+/* Map a viewport point to BASE card-local coords (0..CARD_W, 0..CARD_H). `rect` is the
+   card's (possibly scaled/rotated) bounding box, whose centre is the card centre — CSS
+   scale + rotate are about the centre, so we measure from there, divide the offset by
+   `scale` to undo the size, then apply the INVERSE rotation. With rotationDeg = 0 and
+   scale = 1 this is just the offset from the card's top-left. (2D, screen space, y-down.) */
+export function toCardLocal(rect: DOMRect, clientX: number, clientY: number, rotationDeg: number, scale: number): Point {
+    const dx = (clientX - (rect.left + rect.width / 2)) / scale;
+    const dy = (clientY - (rect.top + rect.height / 2)) / scale;
+    if (!rotationDeg) return {x: CARD_W / 2 + dx, y: CARD_H / 2 + dy};
+    const r = -rotationDeg * (Math.PI / 180);
+    const cos = Math.cos(r), sin = Math.sin(r);
+    return {x: CARD_W / 2 + (dx * cos - dy * sin), y: CARD_H / 2 + (dx * sin + dy * cos)};
+}
+
 /* Return a polygon (as CSS clip-path) that keeps everything on one side of a
    line defined by a point + normal. side = 1 keeps the half the normal points
    into; side = -1 keeps the other half. We build a huge quad covering the card

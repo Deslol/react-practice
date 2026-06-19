@@ -1,5 +1,6 @@
 import {CardType, convertToCardCode} from "./cardImages";
 import {RevealPokerCard} from "./RevealPokerCard";
+import {CardSize, CARD_SIZES} from "./constants";
 
 /*
  *  Example / demo page for <PokerCard/>.
@@ -16,14 +17,27 @@ const DECK: number[] = [
     convertToCardCode(CardType.HEART, 10),    // 10♥
 ];
 
+// A spread of rotations (odd angles + a negative) to confirm the peel works at ANY angle.
+const ROTATED: {code: number; rotation: number}[] = [
+    {code: convertToCardCode(CardType.SPADE, 1), rotation: 23},
+    {code: convertToCardCode(CardType.HEART, 13), rotation: 45},
+    {code: convertToCardCode(CardType.DIAMOND, 12), rotation: 90},
+    {code: convertToCardCode(CardType.CLUB, 11), rotation: 137},
+    {code: convertToCardCode(CardType.HEART, 10), rotation: 200},
+    {code: convertToCardCode(CardType.SPADE, 7), rotation: -75},
+];
+
+// All six named sizes, ordered small → large, for the size showcase.
+const SIZES = [CardSize.mbS, CardSize.mbDefault, CardSize.mbL, CardSize.pcS, CardSize.pcDefault, CardSize.pcL];
+
 export default function PokerFlipExample() {
     return (
         <div style={{
             minHeight: "100vh",
             background: "linear-gradient(165deg, #070c16 0%, #101c30 45%, #0a1220 100%)",
             display: "flex", flexDirection: "column",
-            alignItems: "center", justifyContent: "center",
-            padding: "48px 20px", position: "relative", overflow: "hidden",
+            alignItems: "center", justifyContent: "flex-start",
+            padding: "48px 20px", position: "relative", overflow: "auto",
         }}>
             {/* ambient glow */}
             <div style={{
@@ -70,6 +84,57 @@ export default function PokerFlipExample() {
             }}>
                 {DECK.map((code, i) => (
                     <RevealPokerCard key={`${code}-${i}`} code={code} index={i}/>
+                ))}
+            </div>
+
+            {/* rotated suite — the squeeze works at any angle (pointer is inverse-mapped) */}
+            <div style={{textAlign: "center", margin: "52px 0 16px", position: "relative", zIndex: 1}}>
+                <p style={{
+                    fontSize: 11, color: "#3d5a85", letterSpacing: 3, textTransform: "uppercase",
+                    fontFamily: "'SF Mono', 'Courier New', monospace", margin: 0,
+                }}>Rotated · drag any of them</p>
+            </div>
+            <div style={{
+                display: "flex", flexWrap: "wrap",
+                gap: 8, justifyContent: "center",
+                position: "relative", zIndex: 1, maxWidth: 1120,
+            }}>
+                {ROTATED.map(({code, rotation}, i) => (
+                    <div key={`${code}-${rotation}`} style={{
+                        width: 360, height: 400,
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        position: "relative",
+                    }}>
+                        <RevealPokerCard code={code} index={i} config={{rotation, hint: true, showProgressBar: true}}/>
+                        <span style={{
+                            position: "absolute", bottom: 4, left: 0, right: 0, textAlign: "center",
+                            color: "#5a82b4", fontSize: 11, letterSpacing: 1,
+                            fontFamily: "'SF Mono', 'Courier New', monospace",
+                        }}>{rotation}°</span>
+                    </div>
+                ))}
+            </div>
+
+            {/* sizes — drag any to check the peel at each scale */}
+            <div style={{textAlign: "center", margin: "52px 0 16px", position: "relative", zIndex: 1}}>
+                <p style={{
+                    fontSize: 11, color: "#3d5a85", letterSpacing: 3, textTransform: "uppercase",
+                    fontFamily: "'SF Mono', 'Courier New', monospace", margin: 0,
+                }}>Sizes · drag any of them</p>
+            </div>
+            <div style={{
+                display: "flex", flexWrap: "wrap", gap: 28,
+                justifyContent: "center", alignItems: "flex-end",
+                position: "relative", zIndex: 1, maxWidth: 1160,
+            }}>
+                {SIZES.map((s, i) => (
+                    <div key={s} style={{display: "flex", flexDirection: "column", alignItems: "center", gap: 8}}>
+                        <RevealPokerCard code={DECK[i % DECK.length]} config={{size: s, hint: true, showProgressBar: true}}/>
+                        <span style={{
+                            color: "#5a82b4", fontSize: 11, letterSpacing: 1,
+                            fontFamily: "'SF Mono', 'Courier New', monospace",
+                        }}>{s} · {CARD_SIZES[s].width}×{CARD_SIZES[s].height}</span>
+                    </div>
                 ))}
             </div>
 

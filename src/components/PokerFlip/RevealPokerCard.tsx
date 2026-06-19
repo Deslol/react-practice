@@ -1,7 +1,7 @@
 import {useCallback} from "react";
 import type {CSSProperties} from "react";
 import {cardImageForCode, backImage} from "./cardImages";
-import {CARD_W, CARD_H, CARD_RADIUS, THRESHOLD, ENTRANCE_STAGGER_S} from "./constants";
+import {CARD_W, CARD_H, CARD_RADIUS, THRESHOLD, ENTRANCE_STAGGER_S, CARD_SIZES, CardSize} from "./constants";
 import {foldClipAndTransform} from "./pokerFlipHelper";
 import type {RevealPokerCardProps} from "./pokerFlipInterface";
 import {usePeelGesture} from "./usePeelGesture";
@@ -38,10 +38,22 @@ const cardImgStyle: CSSProperties = {
     pointerEvents: "none",
 };
 
-export function RevealPokerCard({code, index = 0, onReveal, onReset, tapToReset, hint = false, showProgressBar = false}: RevealPokerCardProps) {
+export function RevealPokerCard({code, index = 0, onReveal, onReset, config}: RevealPokerCardProps) {
+    // All appearance/behaviour comes from the single `config` prop (see PokerCardConfig).
+    const {size = CardSize.pcDefault, rotation = 0, hint = false, showProgressBar = false, tapToReset} = config ?? {};
+
+    // Physical render size. The gesture works in the base CARD_W×CARD_H space and the
+    // card is CSS-scaled to fit, so `scale` is what the pointer offset is divided by.
+    const {width: physW, height: physH} = CARD_SIZES[size];
+    const scale = physW / CARD_W;
+    const cardTransform = [
+        scale !== 1 ? `scale(${scale})` : "",
+        rotation ? `rotate(${rotation}deg)` : "",
+    ].filter(Boolean).join(" ") || undefined;
+
     const handleReveal = useCallback(() => onReveal?.(code), [onReveal, code]);
     const {cardRef, dragging, revealed, anchor, progress, cursorPos, fold, start, reset} =
-        usePeelGesture({onReveal: handleReveal, onReset});
+        usePeelGesture({onReveal: handleReveal, onReset, rotation, scale});
 
     // Reset affordance modes (see RevealPokerCardProps.tapToReset):
     //   custom slot → render fn controls reset;  false → disabled;  default → card-tap resets.
@@ -64,8 +76,8 @@ export function RevealPokerCard({code, index = 0, onReveal, onReset, tapToReset,
     return (
         <div
             style={{
-                width: CARD_W, height: CARD_H,
-                perspective: 1000,
+                width: physW, height: physH,
+                perspective: 1000, position: "relative",
                 cursor: !revealed ? "grab" : (tapResetsCard ? "pointer" : "default"),
                 animation: "pokerCardEnter 0.55s cubic-bezier(0.22, 1, 0.36, 1) both",
                 animationDelay: `${index * ENTRANCE_STAGGER_S}s`,
@@ -77,10 +89,16 @@ export function RevealPokerCard({code, index = 0, onReveal, onReset, tapToReset,
                 onMouseDown={onPress}
                 onTouchStart={onPress}
                 style={{
-                    position: "relative",
-                    width: "100%", height: "100%",
+                    // Base CARD_W×CARD_H geometry, centred in the physical wrapper and
+                    // scaled (+ rotated) to fill it. The gesture undoes scale & rotation.
+                    position: "absolute",
+                    top: (physH - CARD_H) / 2, left: (physW - CARD_W) / 2,
+                    width: CARD_W, height: CARD_H,
                     borderRadius: CARD_RADIUS,
+                    transform: cardTransform,
+                    transformOrigin: "center",
                     userSelect: "none", WebkitUserSelect: "none",
+                    touchAction: "none", // card handles its own touch — no page scroll/zoom
                     // While peeling, the lift shadow lives on the (clipped) back layer so
                     // it hugs the peeled silhouette; the wrapper only carries the resting
                     // shadow once the card is fully revealed.

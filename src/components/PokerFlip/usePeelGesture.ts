@@ -3,7 +3,7 @@ import {
     CARD_W, CARD_H, THRESHOLD,
     MAX_PEEL_DIST, MAX_DRAG_DIST, SOFT_RESET_PROJ, SPRING_BACK_MS,
 } from "./constants";
-import {clamp, lerp, pos, nearestAnchor} from "./pokerFlipHelper";
+import {clamp, lerp, pos, nearestAnchor, toCardLocal} from "./pokerFlipHelper";
 import type {Anchor, Fold, Point, PointerEventLike, PeelGesture, UsePeelGestureOptions} from "./pokerFlipInterface";
 
 /**
@@ -15,7 +15,7 @@ import type {Anchor, Fold, Point, PointerEventLike, PeelGesture, UsePeelGestureO
  * springs back. Attach the returned `cardRef` to the draggable element and bind
  * `start` to its pointer-down. Pure mechanics — the consumer renders the state.
  */
-export function usePeelGesture({onReveal, onReset}: UsePeelGestureOptions = {}): PeelGesture {
+export function usePeelGesture({onReveal, onReset, rotation = 0, scale = 1}: UsePeelGestureOptions = {}): PeelGesture {
     const cardRef = useRef<HTMLDivElement>(null);
 
     const [dragging, setDragging] = useState(false);
@@ -30,17 +30,21 @@ export function usePeelGesture({onReveal, onReset}: UsePeelGestureOptions = {}):
     // ── start ─────────────────────────────────────────────────────
     const handleStart = useCallback((e: PointerEventLike) => {
         if (revealed || !cardRef.current) return;
-        e.preventDefault();
+        // Only mouse can preventDefault here — React's onTouchStart is passive, so
+        // calling it on touch warns + no-ops. Touch scrolling is stopped declaratively
+        // by touch-action:none on the card (plus the non-passive touchmove listener).
+        if (!("touches" in e)) e.preventDefault();
         const rect = cardRef.current.getBoundingClientRect();
         rectRef.current = rect; // reuse for the whole drag — the card can't move mid-peel
         const p = pos(e);
-        const a = nearestAnchor(p.x - rect.left, p.y - rect.top, CARD_W, CARD_H);
+        const local = toCardLocal(rect, p.x, p.y, rotation, scale); // → base card-local
+        const a = nearestAnchor(local.x, local.y, CARD_W, CARD_H);
         setAnchor(a);
         setDragging(true);
         setProgress(0);
         setFold(null);
         if (animRef.current) cancelAnimationFrame(animRef.current);
-    }, [revealed]);
+    }, [revealed, rotation, scale]);
 
     // ── move ──────────────────────────────────────────────────────
     const handleMove = useCallback((e: PointerEventLike) => {
@@ -49,8 +53,9 @@ export function usePeelGesture({onReveal, onReset}: UsePeelGestureOptions = {}):
         const rect = rectRef.current;   // captured in handleStart — reusing it avoids a
         if (!rect) return;              // forced synchronous layout flush on every frame
         const p = pos(e);
-        const rawX = p.x - rect.left;
-        const rawY = p.y - rect.top;
+        const local = toCardLocal(rect, p.x, p.y, rotation, scale); // → base card-local
+        const rawX = local.x;
+        const rawY = local.y;
 
         // Clamp the pointer to a max distance from the anchor: dragging far off the
         // card would otherwise fling the finger across the screen. Past the cap the
@@ -95,7 +100,7 @@ export function usePeelGesture({onReveal, onReset}: UsePeelGestureOptions = {}):
         // so the folded flap stays congruent to the area it lifted from.
         setFold({px: anchor.x + ux * proj * 0.5, py: anchor.y + uy * proj * 0.5, nx: ux, ny: uy});
         setProgress(t);
-    }, [dragging, anchor]);
+    }, [dragging, anchor, rotation, scale]);
 
     // ── end ───────────────────────────────────────────────────────
     const handleEnd = useCallback(() => {
